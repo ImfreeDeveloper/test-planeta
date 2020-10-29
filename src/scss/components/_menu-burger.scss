@@ -1,0 +1,38 @@
+$color-burger-line: #081F2C;
+
+.menu-burger {
+  width: 2.5rem;
+  height: 2rem;
+  position: relative;
+  cursor: pointer;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: $color-burger-line;
+    height: .2rem;
+  }
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color-burger-line;
+    height: .2rem;
+  }
+  span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: $color-burger-line;
+    height: .2rem;
+    width: 2rem;
+    margin: auto;
+  }
+}
