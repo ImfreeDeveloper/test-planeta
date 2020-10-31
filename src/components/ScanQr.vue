@@ -5,7 +5,7 @@
       <div class="scan-qr__angles-right"></div>
       <div
         class="scan-qr__start"
-        v-if="camera === 'off'"
+        v-if="false"
         @click="camera = 'auto'"
       >
         <div class="scan-qr__start-img">
@@ -22,11 +22,10 @@
         </div>
         <p>Повторить</p>
       </div> -->
-      <div class="scan-qr__code" v-if="camera !== 'off'">
+      <div class="scan-qr__code">
         <qrcode-stream
           :camera="camera"
           @decode="onDecode"
-          @detect="onDetect"
           @init="onInit"
         />
       </div>
@@ -44,13 +43,14 @@ export default {
     return {
       decodedContent: '',
       errorMessage: '',
-      camera: 'off'
+      camera: 'auto'
     }
   },
 
   methods: {
     onDecode (content) {
       console.log(content)
+      this.camera = 'off'
     },
     onInit (promise) {
       promise
@@ -75,22 +75,9 @@ export default {
             this.errorMessage = 'UNKNOWN ERROR: ' + error.message
           }
         })
-    },
-    async onDetect (promise) {
-      try {
-        const {
-          imageData, // raw image data of image/frame
-          content, // decoded String
-          location // QR code coordinates
-        } = await promise
-        console.log(imageData)
-        console.log(content)
-        console.log(location)
-        // ...
-      } catch (error) {
-        // ...
-      }
     }
   }
 }
+
 </script>
+// t=20170609T114200&s=3000.00&fn=9999078900002273&i=43&fp=159733624&n=1
