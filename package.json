@@ -49,6 +49,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
     "vue": "^2.6.10",
+    "vue-masked-input": "^0.5.2",
     "vue-qrcode-reader": "^2.3.14",
     "vue-router": "^3.1.6"
   }

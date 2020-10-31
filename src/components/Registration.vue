@@ -8,7 +8,7 @@
       <div class="wrp-field">
         <label>Дата покупки*</label>
         <div class="wrp-input">
-          <input type="text" placeholder="" />
+          <masked-input v-model="date" mask="11.11.1111" placeholder="" type="text"/>
           <div class="wrp-field__icon">
             <svg class="icon-date">
               <use xlink:href="/images/svg/sprite.svg#icon-svg-date"></use>
@@ -33,14 +33,21 @@
 </template>
 
 <script>
+import MaskedInput from 'vue-masked-input'
 import FieldSearch from './FieldSearch.vue'
 import AttachFile from './AttachFile.vue'
 import ScanQr from './ScanQr.vue'
 export default {
   components: {
+    MaskedInput,
     FieldSearch,
     AttachFile,
     ScanQr
+  },
+  data () {
+    return {
+      date: ''
+    }
   }
 }
 </script>
