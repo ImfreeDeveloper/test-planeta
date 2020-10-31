@@ -4,9 +4,36 @@
   fill: $color-border;
 }
 
+.icon-arrow {
+  width: .8rem;
+  height: 1.3rem;
+  fill: $color-border;
+}
+
+.icon-search {
+  width: 1.6rem;
+  height: 1.6rem;
+  fill: $color-border;
+}
+
+.icon-clip {
+  width: 2.4rem;
+  height: 2.4rem;
+  stroke: $color-border;
+}
+
+.icon-camera {
+  width: 8rem;
+  height: 5.6rem;
+  fill: #C4C4C4;
+}
+
 .wrp-field {
   &.is-danger {
     .icon-date {
+      fill: $color-red;
+    }
+    .icon-arrow {
       fill: $color-red;
     }
   }

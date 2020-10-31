@@ -1,0 +1,38 @@
+.search {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 100;
+  &__input {
+    position: relative;
+  }
+  &__icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: .8rem;
+    margin: auto;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+  }
+  &__items {
+    border-left: .2rem solid $color-border;
+    border-right: .2rem solid $color-border;
+    border-bottom: .2rem solid $color-border;
+    padding: .6rem 0;
+    max-height: 20rem;
+    overflow: auto;
+  }
+  &__item {
+    font-size: 1.2rem;
+    padding: .5rem .8rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ECEFF1;
+    }
+
+  }
+}

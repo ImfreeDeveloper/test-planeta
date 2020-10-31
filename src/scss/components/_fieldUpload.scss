@@ -1,0 +1,29 @@
+.attachfile {
+  margin-top: 3rem;
+  .wrap-btn-attach {
+    margin-left: auto;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-bottom: 1rem;
+    input[type="file"] {
+      position: absolute;
+      right: 0;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 2;
+      opacity: 0;
+      width: 100%;
+      cursor: pointer;
+    }
+  }
+
+  &__title {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}

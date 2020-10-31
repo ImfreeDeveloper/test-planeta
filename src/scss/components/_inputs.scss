@@ -18,7 +18,7 @@ $color-grey: #999999;
 }
 ::placeholder{color:$color-grey}
 
-input[type="text"]{
+input[type="text"], .wrp-input__field {
   display: block;
   box-sizing: border-box;
   outline: none;
@@ -46,6 +46,11 @@ input[type="text"]{
 
   .wrp-input {
     position: relative;
+    &__field {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
   }
 
   &.is-danger {
@@ -66,8 +71,23 @@ input[type="text"]{
 
   &__icon {
     position: absolute;
-    bottom: .5rem;
+    bottom: 1rem;
     right: 0;
     margin: auto;
+    line-height: 0;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.search {
+  &__input {
+    input[type="text"] {
+      border-left: .2rem solid $color-border;
+      border-right: .2rem solid $color-border;
+      padding-left: 2.7rem;
+    }
   }
 }

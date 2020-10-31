@@ -26,9 +26,24 @@ $color-disabled: #C4C4C4;
       color: #fff;
     }
   }
+  &-dashed {
+    background-color: transparent;
+    border: .2rem dashed $color-border;
+    letter-spacing: 0;
+    font-weight: 400;
+    justify-content: flex-start;
+
+    &-active {
+      border: .2rem solid $color-border;
+    }
+  }
   &[disabled] {
     pointer-events: none;
     border: .2rem solid $color-disabled;
     color: $color-disabled;
+  }
+
+  &__icon {
+    margin-right: 1.5rem;
   }
 }
