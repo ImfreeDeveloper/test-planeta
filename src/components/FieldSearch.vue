@@ -1,10 +1,7 @@
 <template>
-  <div
-    class="wrp-field"
-    :class="{'is-danger': validError}"
-  >
+  <div class="wrp-field" :class="{ 'is-danger': validError }">
     <label>{{ label }}</label>
-    <div class="wrp-input">
+    <div class="wrp-input" :ref="'wrap_search_' + _uid">
       <div class="wrp-input__field" @click="openSearch">
         {{ value.name }}
       </div>
@@ -83,19 +80,17 @@ export default {
       itemsFilter: []
     }
   },
-  props: [
-    'label',
-    'value',
-    'validError',
-    'validErrorText'
-  ],
+  props: ['label', 'value', 'validError', 'validErrorText'],
   methods: {
     openSearch () {
       this.open = true
       this.$nextTick(() => {
         this.$refs['search_' + this._uid].focus()
       })
-      this.itemsFilter = this.items.filter(item => item.name.toLowerCase().indexOf(this.searchItem.toLowerCase()) > -1)
+      this.itemsFilter = this.items.filter(
+        (item) =>
+          item.name.toLowerCase().indexOf(this.searchItem.toLowerCase()) > -1
+      )
     },
     setCurrentItem (item) {
       this.currentItem = item
@@ -106,6 +101,22 @@ export default {
     updateSearch (value) {
       this.searchItem = value
       this.openSearch()
+    },
+    handleOutsideClick (e) {
+      const path = e.path || (e.composedPath && e.composedPath())
+      if (!path.includes(this.$refs['wrap_search_' + this._uid])) {
+        this.open = false
+        this.searchItem = ''
+      }
+    }
+  },
+  watch: {
+    open (val) {
+      if (val) {
+        document.addEventListener('click', this.handleOutsideClick)
+      } else {
+        document.removeEventListener('click', this.handleOutsideClick)
+      }
     }
   }
 }
