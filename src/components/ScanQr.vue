@@ -22,12 +22,16 @@
         </div>
         <p>Повторить</p>
       </div> -->
-      <div class="scan-qr__code">
+      <div class="scan-qr__code" v-if="!destroyed">
         <qrcode-stream
           :camera="camera"
           @decode="onDecode"
           @init="onInit"
-        />
+        >
+          <div class="loading-indicator" v-if="loading">
+            Loading...
+          </div>
+        </qrcode-stream>
       </div>
     </div>
   </div>
@@ -43,46 +47,46 @@ export default {
     return {
       decodedContent: '',
       errorMessage: '',
-      camera: 'auto'
+      camera: 'auto',
+      loading: false,
+      destroyed: false
     }
   },
 
   methods: {
     onDecode (content) {
       // const params = content.split('&')
-      const params = 't=20170609T114200&s=3000.00&fn=9999078900002273&i=43&fp=159733624&n=1'.split('&')
-      if (params.length) {
+      try {
+        const params = 't=20170609T114200&s=3000.00&fn=9999078900002273&i=43&fp=159733624&n=1'.split('&&')
+
         let t = params[0].split('t=')[1]
         let s = params[1].split('s=')[1]
 
         console.log(t + ' - ' + s)
         console.log(getDate(t))
+      } catch (error) {
+        console.log(error)
       }
+
       this.camera = 'off'
     },
-    onInit (promise) {
-      promise
-        .then(() => {
-          console.log('Successfully initilized! Ready for scanning now!')
-        })
-        .catch((error) => {
-          if (error.name === 'NotAllowedError') {
-            this.errorMessage = 'Hey! I need access to your camera'
-          } else if (error.name === 'NotFoundError') {
-            this.errorMessage = 'Do you even have a camera on your device?'
-          } else if (error.name === 'NotSupportedError') {
-            this.errorMessage =
-              'Seems like this page is served in non-secure context (HTTPS, localhost or file://)'
-          } else if (error.name === 'NotReadableError') {
-            this.errorMessage =
-              "Couldn't access your camera. Is it already in use?"
-          } else if (error.name === 'OverconstrainedError') {
-            this.errorMessage =
-              "Constraints don't match any installed camera. Did you asked for the front camera although there is none?"
-          } else {
-            this.errorMessage = 'UNKNOWN ERROR: ' + error.message
-          }
-        })
+    async onInit (promise) {
+      this.loading = true
+
+      try {
+        await promise
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+      }
+    },
+    async reload () {
+      this.destroyed = true
+
+      await this.$nextTick()
+
+      this.destroyed = false
     }
   }
 }

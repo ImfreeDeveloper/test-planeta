@@ -5,20 +5,7 @@
     <FieldSearch />
     <div class="registartion__scan">
       <ScanQr />
-      <div class="wrp-field">
-        <label>Дата покупки*</label>
-        <div class="wrp-input">
-          <masked-input v-model="date" mask="11.11.1111" placeholder="" type="text"/>
-          <div class="wrp-field__icon">
-            <svg class="icon-date">
-              <use xlink:href="/images/svg/sprite.svg#icon-svg-date"></use>
-            </svg>
-          </div>
-        </div>
-        <!-- <p class="wrp-field__error">
-        Дата покупки не соответствует условиям акции.
-      </p> -->
-      </div>
+      <FieldDate />
       <div class="wrp-field">
         <label>Сумма покупки*</label>
         <div class="wrp-input">
@@ -33,14 +20,14 @@
 </template>
 
 <script>
-import MaskedInput from 'vue-masked-input'
 import FieldSearch from './FieldSearch.vue'
+import FieldDate from './FieldDate.vue'
 import AttachFile from './AttachFile.vue'
 import ScanQr from './ScanQr.vue'
 export default {
   components: {
-    MaskedInput,
     FieldSearch,
+    FieldDate,
     AttachFile,
     ScanQr
   },
