@@ -6,12 +6,12 @@
     <div class="registartion__scan">
       <ScanQr />
       <FieldDate />
-      <div class="wrp-field">
-        <label>Сумма покупки*</label>
-        <div class="wrp-input">
-          <input type="text" placeholder="" />
-        </div>
-      </div>
+      <Field
+        label="Сумма покупки*"
+        validErrorText="Сумма покупки не соответствует условиям акции"
+        :validError="$v.summa.$error"
+        v-model="summa"
+      />
       <AttachFile />
     </div>
 
@@ -20,20 +20,33 @@
 </template>
 
 <script>
+// import { required, minLength } from 'vuelidate/lib/validators'
 import FieldSearch from './FieldSearch.vue'
 import FieldDate from './FieldDate.vue'
+import Field from './Field.vue'
 import AttachFile from './AttachFile.vue'
 import ScanQr from './ScanQr.vue'
+
 export default {
   components: {
     FieldSearch,
     FieldDate,
+    Field,
     AttachFile,
     ScanQr
   },
   data () {
     return {
-      date: ''
+      date: '',
+      summa: ''
+    }
+  },
+
+  validations: {
+    summa: {
+      validSummaPromo (summa) {
+        return summa >= 3000
+      }
     }
   }
 }

@@ -51,6 +51,7 @@
     "vue": "^2.6.10",
     "vue-masked-input": "^0.5.2",
     "vue-qrcode-reader": "^2.3.14",
-    "vue-router": "^3.1.6"
+    "vue-router": "^3.1.6",
+    "vuelidate": "^0.7.6"
   }
 }
