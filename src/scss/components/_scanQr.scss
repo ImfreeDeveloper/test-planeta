@@ -98,5 +98,18 @@ $color-border-angel: #E04B24;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .loading-indicator {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+    }
   }
 }

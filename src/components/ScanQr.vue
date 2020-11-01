@@ -5,8 +5,8 @@
       <div class="scan-qr__angles-right"></div>
       <div
         class="scan-qr__start"
-        v-if="false"
-        @click="camera = 'auto'"
+        v-if="isStart"
+        @click="startScan"
       >
         <div class="scan-qr__start-img">
           <svg class="icon-camera">
@@ -15,22 +15,28 @@
         </div>
         <p class="scan-qr__start-text">Нажмите для сканирования QR-кода</p>
       </div>
-      <!-- <div class="scan-qr__refresh">
+      <div class="scan-qr__refresh"
+        @click="reload"
+        v-if="isError"
+      >
         <p>Не удалось считать QR-код</p>
         <div class="scan-qr__refresh-img">
           <img src="/images/svg/icon-reload.svg" alt="refresh" />
         </div>
         <p>Повторить</p>
-      </div> -->
-      <div class="scan-qr__code" v-if="!destroyed">
+      </div>
+      <div class="scan-qr__code"
+        v-if="!destroyed && !isStart && !isError"
+        @click="reload"
+      >
         <qrcode-stream
           :camera="camera"
           @decode="onDecode"
           @init="onInit"
         >
-          <div class="loading-indicator" v-if="loading">
-            Loading...
-          </div>
+          <span class="loading-indicator" v-if="loading">
+            Загрузка...
+          </span>
         </qrcode-stream>
       </div>
     </div>
@@ -45,30 +51,37 @@ export default {
   },
   data () {
     return {
-      decodedContent: '',
-      errorMessage: '',
-      camera: 'auto',
+      camera: 'off',
       loading: false,
-      destroyed: false
+      destroyed: false,
+      isStart: true,
+      isError: false
     }
   },
 
   methods: {
+    startScan () {
+      this.isStart = false
+      this.camera = 'auto'
+    },
     onDecode (content) {
-      // const params = content.split('&')
       try {
-        const params = 't=20170609T114200&s=3000.00&fn=9999078900002273&i=43&fp=159733624&n=1'.split('&&')
+        const params = content.split('&')
 
-        let t = params[0].split('t=')[1]
-        let s = params[1].split('s=')[1]
+        const date = getDate(params[0].split('t=')[1])
+        const summa = params[1].split('s=')[1]
 
-        console.log(t + ' - ' + s)
-        console.log(getDate(t))
+        this.$emit('handlerScan', {
+          date,
+          summa,
+          isError: false
+        })
       } catch (error) {
-        console.log(error)
+        this.isError = true
+        this.$emit('handlerScan', { isError: true })
+      } finally {
+        this.camera = 'off'
       }
-
-      this.camera = 'off'
     },
     async onInit (promise) {
       this.loading = true
@@ -87,6 +100,9 @@ export default {
       await this.$nextTick()
 
       this.destroyed = false
+      this.isError = false
+      this.$emit('handlerScan', { isError: false })
+      this.camera = 'auto'
     }
   }
 }

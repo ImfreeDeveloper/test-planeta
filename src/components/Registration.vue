@@ -3,14 +3,20 @@
     <h1 class="registartion__title">Авто за 3000 ₽</h1>
     <h2 class="registartion__subtitle">Регистрация чека</h2>
     <FieldSearch
-        label="Магазин покупки*"
-        validErrorText="Магазин не выбран"
-        :validError="$v.shop.$error"
-        v-model="shop"
-        @blur="validateField('shop')"
+      label="Магазин покупки*"
+      validErrorText="Магазин не выбран"
+      :validError="$v.shop.$error"
+      v-model="shop"
+      @blur="validateField('shop')"
     />
-    <div class="registartion__scan">
-      <ScanQr />
+    <ScanQr @handlerScan="getDataScan" />
+    <button
+      class="btn btn-primary"
+      :disabled="!isErrorScan"
+      v-if="!showInfoReceipt"
+      @click="isErrorScan ? showInfoReceipt = true : false"
+    >Ввести данные из чека</button>
+    <div class="registartion__info-receipt" v-if="showInfoReceipt">
       <FieldDate
         label="Дата покупки*"
         validErrorText="Дата покупки не соответствует условиям акции."
@@ -27,9 +33,10 @@
         @blur="validateField('summaPromo')"
       />
       <AttachFile />
+      <button class="btn btn-primary" @click="submitHandler">
+        Зарегистрировать купон
+      </button>
     </div>
-
-    <button class="btn btn-primary" @click="submitHandler">Зарегистрировать купон</button>
   </div>
 </template>
 
@@ -52,8 +59,10 @@ export default {
   data () {
     return {
       datePromo: '',
+      summaPromo: '',
       shop: '',
-      summaPromo: ''
+      isErrorScan: false,
+      showInfoReceipt: false
     }
   },
   validations: {
@@ -77,7 +86,7 @@ export default {
         const arrD = dt.split('.')
         arrD[1] -= 1
         const d = new Date(arrD[2], arrD[1], arrD[0])
-        return (d >= startDatePromo && d <= currentDatePromo)
+        return d >= startDatePromo && d <= currentDatePromo
       }
     }
   },
@@ -95,7 +104,26 @@ export default {
     },
     setFormat (e) {
       let value = e.target.value
-      this.summaPromo = value.replace(/\D/g, '').replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
+      this.summaPromo = value
+        .replace(/\D/g, '')
+        .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
+    },
+    getDataScan (data) {
+      if (data.date) {
+        const summaPromo = data.summa
+          .replace(/\..*/, '')
+          .replace(/\D/g, '')
+          .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
+        this.showInfoReceipt = true
+        this.datePromo = data.date
+        this.summaPromo = summaPromo
+        this.$v.$touch()
+      } else {
+        this.showInfoReceipt = false
+        this.datePromo = ''
+        this.summaPromo = ''
+      }
+      this.isErrorScan = data.isError
     }
   }
 }
