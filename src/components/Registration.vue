@@ -23,6 +23,7 @@
         validErrorText="Сумма покупки не соответствует условиям акции"
         :validError="$v.summaPromo.$error"
         v-model="summaPromo"
+        @keyup="setFormat"
         @blur="validateField('summaPromo')"
       />
       <AttachFile />
@@ -62,7 +63,8 @@ export default {
     summaPromo: {
       required,
       validSummaPromo (summa) {
-        return summa >= 3000
+        const summaNoSpace = summa.replace(/\D/g, '')
+        return summaNoSpace >= 3000
       }
     },
     datePromo: {
@@ -90,6 +92,10 @@ export default {
         console.log(`Дата покупки: ${this.datePromo}`)
         console.log(`Сумма покупки: ${this.summaPromo}`)
       }
+    },
+    setFormat (e) {
+      let value = e.target.value
+      this.summaPromo = value.replace(/\D/g, '').replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
     }
   }
 }
