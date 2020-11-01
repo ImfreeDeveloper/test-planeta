@@ -1,9 +1,12 @@
 <template>
-  <div class="wrp-field">
-    <label>Магазин покупки*</label>
+  <div
+    class="wrp-field"
+    :class="{'is-danger': validError}"
+  >
+    <label>{{ label }}</label>
     <div class="wrp-input">
       <div class="wrp-input__field" @click="openSearch">
-        {{ currentItem.name }}
+        {{ value.name }}
       </div>
       <div class="wrp-field__icon" :class="{ open: open }">
         <svg class="icon-arrow">
@@ -12,7 +15,13 @@
       </div>
       <div class="search" v-show="open">
         <div class="search__input">
-          <input type="text" placeholder="" v-model="searchItem" />
+          <input
+            type="text"
+            placeholder=""
+            :value="searchItem"
+            @input="updateSearch($event.target.value)"
+            :ref="'search_' + _uid"
+          />
           <div class="search__icon">
             <svg class="icon-search">
               <use xlink:href="/images/svg/sprite.svg#icon-svg-search"></use>
@@ -25,12 +34,16 @@
             v-for="item in itemsFilter"
             :key="item.id"
             @click="setCurrentItem(item)"
+            @keyup.enter="setCurrentItem(item)"
           >
             {{ item.name }}
           </div>
         </div>
       </div>
     </div>
+    <p class="wrp-field__error" v-if="validError">
+      {{ validErrorText }}
+    </p>
   </div>
 </template>
 
@@ -66,25 +79,33 @@ export default {
       ],
       open: false,
       currentItem: {},
-      searchItem: ''
+      searchItem: '',
+      itemsFilter: []
     }
   },
-  computed: {
-    itemsFilter () {
-      return this.items.filter(
-        (item) =>
-          item.name.toLowerCase().indexOf(this.searchItem.toLowerCase()) !== -1
-      )
-    }
-  },
+  props: [
+    'label',
+    'value',
+    'validError',
+    'validErrorText'
+  ],
   methods: {
     openSearch () {
       this.open = true
+      this.$nextTick(() => {
+        this.$refs['search_' + this._uid].focus()
+      })
+      this.itemsFilter = this.items.filter(item => item.name.toLowerCase().indexOf(this.searchItem.toLowerCase()) > -1)
     },
     setCurrentItem (item) {
       this.currentItem = item
       this.open = false
       this.searchItem = ''
+      this.$emit('input', this.currentItem)
+    },
+    updateSearch (value) {
+      this.searchItem = value
+      this.openSearch()
     }
   }
 }

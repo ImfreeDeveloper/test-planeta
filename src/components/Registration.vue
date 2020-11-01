@@ -2,7 +2,13 @@
   <div class="registartion">
     <h1 class="registartion__title">Авто за 3000 ₽</h1>
     <h2 class="registartion__subtitle">Регистрация чека</h2>
-    <FieldSearch />
+    <FieldSearch
+        label="Магазин покупки*"
+        validErrorText="Магазин не выбран"
+        :validError="$v.shop.$error"
+        v-model="shop"
+        @blur="validateField('shop')"
+    />
     <div class="registartion__scan">
       <ScanQr />
       <FieldDate
@@ -45,10 +51,14 @@ export default {
   data () {
     return {
       datePromo: '',
+      shop: '',
       summaPromo: ''
     }
   },
   validations: {
+    shop: {
+      required
+    },
     summaPromo: {
       required,
       validSummaPromo (summa) {
@@ -75,6 +85,11 @@ export default {
     },
     submitHandler () {
       this.$v.$touch()
+      if (!this.$v.$invalid) {
+        console.log(`Магазин: ${this.shop.name}`)
+        console.log(`Дата покупки: ${this.datePromo}`)
+        console.log(`Сумма покупки: ${this.summaPromo}`)
+      }
     }
   }
 }
