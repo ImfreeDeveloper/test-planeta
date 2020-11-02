@@ -1,6 +1,6 @@
 <template>
   <div class="registartion">
-    <h1 class="registartion__title">Авто за 3000 ₽</h1>
+    <h1 class="registartion__title">Авто за 3000 <i class="rub"></i></h1>
     <h2 class="registartion__subtitle">Регистрация чека</h2>
     <FieldSearch
       label="Магазин покупки*"
@@ -28,10 +28,17 @@
         label="Сумма покупки*"
         validErrorText="Сумма покупки не соответствует условиям акции"
         :validError="$v.summaPromo.$error"
+        :maxLength="9"
         v-model="summaPromo"
         @keyup="setFormat"
         @blur="validateField('summaPromo')"
-      />
+      >
+        <template slot="icon">
+          <div class="wrp-field__icon wrp-field__icon-rub">
+            <i class="rub"></i>
+          </div>
+        </template>
+      </Field>
       <AttachFile />
       <button class="btn btn-primary" @click="submitHandler">
         Зарегистрировать купон

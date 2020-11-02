@@ -22,6 +22,14 @@ $color-bg-footer: #ECEFF1;
       color: #7A99AC;
       text-decoration: underline;
       margin-top: 1.5rem;
+
+      &:hover {
+        text-decoration: none;
+
+        @include md-block(){
+          text-decoration: underline;
+        }
+      }
     }
   }
 }

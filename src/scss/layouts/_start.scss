@@ -10,10 +10,10 @@ select::-ms-expand {
 }
 
 html {
-  font-size: 82.5%;
-  // @include md-block() {
-  //  font-size: 52.5%;
-  // }
+  font-size: 71%;
+  @include sm-block() {
+   font-size: 62.5%;
+  }
 }
 
 html, body{
@@ -42,11 +42,28 @@ ul, ol {
 a {
   color: $color-text;
   transition: all .3s ease;
+
+  @include md-block(){
+    cursor: default;
+  }
 }
 
 a, a:hover, a:focus, a:active {
   text-decoration: none;
   outline: none;
+}
+
+i.rub {
+  display: inline-block;
+  font-family: "ptrouble", sans-serif;
+  font-style: normal;
+  line-height: 1.3;
+  position: relative;
+  font-size: 2.5rem;
+  &:before {
+    content: "7";
+    display: block;
+  }
 }
 
 .wrapper {

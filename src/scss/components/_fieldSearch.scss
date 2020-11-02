@@ -30,9 +30,26 @@
     padding: .5rem .8rem;
     cursor: pointer;
 
+    @include md-block(){
+      cursor: default;
+    }
+
     &:hover {
       background-color: #ECEFF1;
     }
 
+  }
+}
+
+.is-danger {
+  .search {
+    &__input {
+      input {
+        border-color: $color-red;
+      }
+    }
+    &__items {
+      border-color: $color-red;
+    }
   }
 }

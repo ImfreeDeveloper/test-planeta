@@ -5,6 +5,11 @@ $color-burger-line: #081F2C;
   height: 2rem;
   position: relative;
   cursor: pointer;
+
+  @include md-block(){
+    cursor: default;
+  }
+
   &:before {
     content: '';
     display: block;

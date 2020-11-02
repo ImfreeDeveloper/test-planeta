@@ -1,3 +1,7 @@
+$break_md: 992px;
+$break_sm: 768px;
+$break_xs: 576px;
+
 @mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
   $src: null;
 
@@ -232,5 +236,23 @@
   }
   [hidden] {
     display: none;
+  }
+}
+
+@mixin md-block(){
+  @media screen and (max-width: $break_md){
+      @content;
+  }
+}
+
+@mixin sm-block(){
+  @media screen and (max-width: $break_sm){
+      @content;
+  }
+}
+
+@mixin xs-block(){
+  @media screen and (max-width: $break_xs){
+      @content;
   }
 }

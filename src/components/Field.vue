@@ -10,7 +10,9 @@
         placeholder=""
         :value="value"
         v-on="inputListeners"
+        :maxlength="maxLength ? maxLength : null"
       />
+      <slot name="icon"></slot>
     </div>
     <p class="wrp-field__error" v-if="validError">
       {{ validErrorText }}
@@ -25,7 +27,8 @@ export default {
     'label',
     'value',
     'validError',
-    'validErrorText'
+    'validErrorText',
+    'maxLength'
   ],
   computed: {
     inputListeners: function () {
