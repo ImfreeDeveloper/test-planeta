@@ -75,6 +75,53 @@ i.rub {
   margin: 0 auto;
 }
 
+.wrap-content {
+  padding: 3rem 1.5rem;
+}
+
+
+.text {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  p {
+    display: block;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+
+  i.rub {
+    font-size: 1.7rem;
+  }
+}
+
+.link {
+  display: inline-block;
+  color: $color-link;
+  font-size: 1.2rem;
+  text-decoration: underline;
+}
+
+.subtitle {
+  font-size: 1.6rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+
+.mt3 {
+  margin-top: 3rem;
+}
+.mb2 {
+  margin-bottom: 2rem;
+}
+
 .content {
   flex: 1 0 auto;
 }

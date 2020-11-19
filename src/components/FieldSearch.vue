@@ -48,39 +48,13 @@
 export default {
   data () {
     return {
-      items: [
-        {
-          id: 0,
-          name: 'Adidas'
-        },
-        {
-          id: 1,
-          name: 'Adidas origin'
-        },
-        {
-          id: 2,
-          name: 'Oysx'
-        },
-        {
-          id: 3,
-          name: 'Bershka'
-        },
-        {
-          id: 4,
-          name: 'Pull & Bear'
-        },
-        {
-          id: 5,
-          name: 'Zara'
-        }
-      ],
       open: false,
       currentItem: {},
       searchItem: '',
       itemsFilter: []
     }
   },
-  props: ['label', 'value', 'validError', 'validErrorText'],
+  props: ['label', 'value', 'validError', 'validErrorText', 'items'],
   methods: {
     openSearch () {
       this.open = true

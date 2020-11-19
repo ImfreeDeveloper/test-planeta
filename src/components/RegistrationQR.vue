@@ -1,9 +1,10 @@
 <template>
   <div class="registartion">
-    <h1 class="registartion__title">Авто за 3000 <i class="rub"></i></h1>
-    <h2 class="registartion__subtitle">Регистрация чека</h2>
+    <h1 class="title">Авто за 3000 <i class="rub"></i></h1>
+    <h2 class="subtitle">Регистрация чека</h2>
     <FieldSearch
       label="Магазин покупки*"
+      :items="itemsShops"
       validErrorText="Магазин не выбран"
       :validError="$v.shop.$error"
       v-model="shop"
@@ -69,7 +70,33 @@ export default {
       summaPromo: '',
       shop: '',
       isErrorScan: false,
-      showInfoReceipt: false
+      showInfoReceipt: false,
+      itemsShops: [
+        {
+          id: 0,
+          name: 'Adidas'
+        },
+        {
+          id: 1,
+          name: 'Adidas origin'
+        },
+        {
+          id: 2,
+          name: 'Oysx'
+        },
+        {
+          id: 3,
+          name: 'Bershka'
+        },
+        {
+          id: 4,
+          name: 'Pull & Bear'
+        },
+        {
+          id: 5,
+          name: 'Zara'
+        }
+      ]
     }
   },
   validations: {

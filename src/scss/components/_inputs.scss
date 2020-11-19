@@ -36,10 +36,10 @@ input[type="text"], .wrp-input__field {
 
 .wrp-field {
   display: block;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
   font-size: 1.2rem;
 
-  label {
+  > label {
     display: block;
     font-weight: 500;
     margin-bottom: 1rem;
@@ -106,6 +106,74 @@ input[type="text"], .wrp-input__field {
       border-left: .2rem solid $color-border;
       border-right: .2rem solid $color-border;
       padding-left: 2.7rem;
+    }
+  }
+}
+// checkbox
+$size-border: .2rem;
+
+.checkbox-wrap {
+  display: flex;
+  align-items: flex-start;
+  .checkbox {
+    display: none;
+    &.is-danger {
+      & + .checkbox-custom {
+        border: $size-border solid $color-red;
+      }
+    }
+    &:checked {
+      & + .checkbox-custom {
+        border: $size-border solid $color-text;
+        &:before {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  .checkbox-custom {
+    width: 1.2rem;
+    height: 1.2rem;
+    border: $size-border solid $color-text;
+    position: relative;
+    flex-shrink: 0;
+    transition: border .2s ease-in-out;
+    cursor: pointer;
+    margin-right: 1rem;
+    @include md-block() {
+      cursor: default;
+    }
+    &:hover {
+      border: $size-border solid darken($color-text, 30%);
+    }
+    &:before {
+      opacity: 0;
+      content: "";
+      display: block;
+      position: absolute;
+      top: -.3rem;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      height: .4rem;
+      width: .6rem;
+      border-left: .2rem solid $color-text;
+      border-bottom: .2rem solid $color-text;
+      transform: rotate(-45deg);
+      transition: opacity .2s ease-in-out;
+    }
+  }
+  .label {
+    font-size: 1.2rem;
+    line-height: 1.3;
+    a {
+      color: $color-link;
+      text-decoration: underline;
+      cursor: pointer;
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 }
