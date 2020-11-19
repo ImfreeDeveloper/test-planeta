@@ -7,15 +7,14 @@
         телефона.
       </p>
     </div>
-    <Field
+    <FieldPhone
       label="Телефон*"
-      validErrorText="Введите телефон"
-      :validError="$v.phone.$error"
-      :maxLength="9"
+      :validErrorAPI="validErrorPhoneAPI"
+      :validError="$v.phone"
       v-model="phone"
       @blur="validateField('phone')"
     >
-    </Field>
+    </FieldPhone>
     <FieldCheck
       :validError="$v.iagree.$error"
       validErrorText="Error какой-то"
@@ -41,27 +40,32 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
-import Field from '../Field.vue'
+import { required, minLength } from 'vuelidate/lib/validators'
+import FieldPhone from '../FieldPhone.vue'
 import FieldCheck from '../FieldCheck.vue'
 import { eventBus } from '../../js/main'
 import { STEP_SMS } from '../../js/constants'
 
 export default {
   components: {
-    Field,
+    FieldPhone,
     FieldCheck
   },
   data () {
     return {
       phone: '',
       iagree: false,
-      iagreeC: false
+      iagreeC: false,
+      validErrorPhoneAPI: {
+        isError: false,
+        message: ''
+      }
     }
   },
   validations: {
     phone: {
-      required
+      required,
+      minLength: minLength(22)
       // validSummaPromo (summa) {
       //   const summaNoSpace = summa.replace(/\D/g, '')
       //   return summaNoSpace >= 3000
@@ -88,6 +92,12 @@ export default {
       this.$v.$touch()
       if (!this.$v.$invalid) {
         eventBus.$emit('step', STEP_SMS)
+        // setTimeout(() => {
+        //   this.validErrorPhoneAPI = {
+        //     isError: true,
+        //     message: 'Серверная ошибка'
+        //   }
+        // }, 2000)
       }
     }
   }
