@@ -7,22 +7,22 @@
     </div>
     <Field
       label="Электронная почта*"
-      validErrorText="Не верная почта"
-      :validError="$v.email.$error"
+      :validErrorText="textError.email"
+      :validError="$v.email"
       v-model="email"
       @blur="validateField('email')"
     />
     <Field
       label="Фамилия*"
-      validErrorText="Поле «Фамилия» не заполнено"
-      :validError="$v.surname.$error"
+      :validErrorText="textError.surname"
+      :validError="$v.surname"
       v-model="surname"
       @blur="validateField('surname')"
     />
     <Field
       label="Имя*"
-      validErrorText="Поле «Имя» не заполнено"
-      :validError="$v.name.$error"
+      :validErrorText="textError.name"
+      :validError="$v.name"
       v-model="name"
       @blur="validateField('name')"
     />
@@ -47,11 +47,12 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, email, minLength, helpers } from 'vuelidate/lib/validators'
 import Field from '../fieldsInput/Field.vue'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
 import { eventBus } from '../../js/main'
-import { STEP_QR } from '../../js/constants'
+import { STEP_DATA, STEP_QR } from '../../js/constants'
+import * as LS from '../../js/localStorage'
 
 export default {
   components: {
@@ -100,7 +101,23 @@ export default {
           id: 3,
           name: 'Район4'
         }
-      ]
+      ],
+      textError: {
+        email: {
+          required: 'Поле «Электронная почта» не заполнено',
+          email: 'Некорректный формат E-mail. Поле должно содержать минимум 6 символов, цифры или буквы латинского алфавита.'
+        },
+        surname: {
+          required: 'Поле «Фамилия» не заполнено',
+          minLength: 'Минимум 2 символа',
+          ru: 'Некорректный формат. Поле должно содержать буквы русского алфавита.'
+        },
+        name: {
+          required: 'Поле «Имя» не заполнено',
+          minLength: 'Минимум 2 символа',
+          ru: 'Некорректный формат. Поле должно содержать буквы русского алфавита.'
+        }
+      }
     }
   },
   validations: {
@@ -111,17 +128,26 @@ export default {
       required
     },
     email: {
-      required
+      required,
+      email
       // validSummaPromo (summa) {
       //   const summaNoSpace = summa.replace(/\D/g, '')
       //   return summaNoSpace >= 3000
       // }
     },
     surname: {
-      required
+      required,
+      minLength: minLength(2),
+      ru (val) {
+        return val.length < 2 || /[а-яё]+/i.test(val)
+      }
     },
     name: {
-      required
+      required,
+      minLength: minLength(2),
+      ru (val) {
+        return val.length < 2 || /[а-яё]+/i.test(val)
+      }
     }
   },
   methods: {
@@ -134,6 +160,9 @@ export default {
         eventBus.$emit('step', STEP_QR)
       }
     }
+  },
+  mounted () {
+    LS.setStep(STEP_DATA)
   }
 }
 </script>

@@ -45,9 +45,10 @@
 import { required, minLength } from 'vuelidate/lib/validators'
 import FieldPhone from '../fieldsInput/FieldPhone.vue'
 import FieldCheck from '../fieldsInput/FieldCheck.vue'
-// import { eventBus } from '../../js/main'
-// import { STEP_SMS } from '../../js/constants'
+import { eventBus } from '../../js/main'
+import { STEP_PHONE, STEP_SMS } from '../../js/constants'
 import * as authApi from '../../api/auth'
+import * as LS from '../../js/localStorage'
 
 export default {
   components: {
@@ -89,23 +90,32 @@ export default {
           isError: false,
           message: ''
         }
-        try {
-          const data = await authApi.sendToken({ phone: this.phone })
-          setTimeout(() => {
-            console.log(data)
-            // eventBus.$emit('step', STEP_SMS)
-          }, 1000)
-        } catch (error) {
-          console.log(error)
-          this.validErrorPhoneAPI = {
-            isError: true,
-            message: 'Ошибка сервера'
-          }
-        }
-
-        this.loading = false
+        setTimeout(() => {
+          this.loading = false
+          LS.setPhone(this.phone)
+          eventBus.$emit('step', STEP_SMS)
+        }, 600)
+        // try {
+        //   const data = await authApi.sendToken({ phone: this.phone })
+        //   setTimeout(() => {
+        //     console.log(data)
+        //     this.loading = false
+        //     eventBus.$emit('phone', this.phone)
+        //     eventBus.$emit('step', STEP_SMS)
+        //   }, 600)
+        // } catch (error) {
+        //   console.log(error)
+        //   this.loading = false
+        //   this.validErrorPhoneAPI = {
+        //     isError: true,
+        //     message: 'Ошибка сервера'
+        //   }
+        // }
       }
     }
+  },
+  mounted () {
+    LS.setStep(STEP_PHONE)
   }
 }
 </script>
