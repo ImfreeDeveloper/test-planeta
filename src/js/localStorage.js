@@ -48,6 +48,14 @@ export function getPhone () {
   return null
 }
 
+export function getCities () {
+  const ls = getStorage()
+  if (ls.hasOwnProperty('promo')) {
+    return JSON.parse(ls.promo.cities) || null
+  }
+  return null
+}
+
 function getStorage () {
   return JSON.parse(localStorage.getItem('planeta-promo')) || {}
 }

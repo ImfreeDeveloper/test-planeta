@@ -1,5 +1,7 @@
 <template>
-  <div class="wrp-field" :class="{ 'is-danger': validError }">
+  <div class="wrp-field"
+    :class="{'is-danger': validError.$error}"
+  >
     <label>{{ label }}</label>
     <div class="wrp-input" :ref="'wrap_search_' + _uid">
       <div class="wrp-input__field" @click="openSearch">
@@ -38,8 +40,13 @@
         </div>
       </div>
     </div>
-    <p class="wrp-field__error" v-if="validError">
-      {{ validErrorText }}
+    <p
+      class="wrp-field__error"
+      v-for="(err, name) in validErrorText"
+      :key="name"
+      v-show="validError.$error && !validError[name]"
+    >
+      {{ err }}
     </p>
   </div>
 </template>

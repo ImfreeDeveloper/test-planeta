@@ -29,16 +29,16 @@
     <FieldSearch
       label="Город*"
       :items="сitiesItems"
-      validErrorText="Город не выбран"
-      :validError="$v.city.$error"
+      :validErrorText="textError.city"
+      :validError="$v.city"
       v-model="city"
       @blur="validateField('city')"
     />
     <FieldSearch
       label="Район*"
       :items="districtsItems"
-      validErrorText="Район не выбран"
-      :validError="$v.district.$error"
+      :validErrorText="textError.district"
+      :validError="$v.district"
       v-model="district"
       @blur="validateField('district')"
     />
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { required, email, minLength, helpers } from 'vuelidate/lib/validators'
+import { required, email, minLength, requiredIf } from 'vuelidate/lib/validators'
 import Field from '../fieldsInput/Field.vue'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
 import { eventBus } from '../../js/main'
@@ -66,42 +66,7 @@ export default {
       name: '',
       district: '',
       city: '',
-      сitiesItems: [
-        {
-          id: 0,
-          name: 'Уфа'
-        },
-        {
-          id: 1,
-          name: 'Москва'
-        },
-        {
-          id: 2,
-          name: 'Санкт-Петербург'
-        },
-        {
-          id: 3,
-          name: 'Казань'
-        }
-      ],
-      districtsItems: [
-        {
-          id: 0,
-          name: 'Район1'
-        },
-        {
-          id: 1,
-          name: 'Район2'
-        },
-        {
-          id: 2,
-          name: 'Район3'
-        },
-        {
-          id: 3,
-          name: 'Район4'
-        }
-      ],
+      сities: [],
       textError: {
         email: {
           required: 'Поле «Электронная почта» не заполнено',
@@ -116,8 +81,28 @@ export default {
           required: 'Поле «Имя» не заполнено',
           minLength: 'Минимум 2 символа',
           ru: 'Некорректный формат. Поле должно содержать буквы русского алфавита.'
+        },
+        district: {
+          required: 'Поле «Район» не заполнено',
+          sameAsCity: 'Сначала выберите город'
+        },
+        city: {
+          required: 'Поле «Город» не заполнено'
         }
       }
+    }
+  },
+  computed: {
+    сitiesItems () {
+      return Object.keys(this.cities).map((city, idx) => {
+        return {
+          id: idx,
+          name: city
+        }
+      })
+    },
+    districtsItems () {
+      return this.getDistricts(this.city)
     }
   },
   validations: {
@@ -125,15 +110,14 @@ export default {
       required
     },
     district: {
-      required
+      required,
+      sameAsCity: requiredIf(function (nestedModel) {
+        return !this.isOptional && nestedModel.someFlag
+      })
     },
     email: {
       required,
       email
-      // validSummaPromo (summa) {
-      //   const summaNoSpace = summa.replace(/\D/g, '')
-      //   return summaNoSpace >= 3000
-      // }
     },
     surname: {
       required,
@@ -159,10 +143,23 @@ export default {
       if (!this.$v.$invalid) {
         eventBus.$emit('step', STEP_QR)
       }
+    },
+    getDistricts (city) {
+      let cityName = city ? city.name : Object.keys(this.cities)[0]
+      const districts = this.cities[cityName]
+      this.district = ''
+      return districts.map((district, idx) => {
+        return {
+          id: city.id + '' + idx,
+          name: district
+        }
+      })
     }
   },
-  mounted () {
+  created () {
     LS.setStep(STEP_DATA)
+    this.cities = LS.getCities()
   }
 }
+
 </script>
