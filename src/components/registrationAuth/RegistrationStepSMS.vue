@@ -6,15 +6,13 @@
       <p>Мы отправлили SMS с проверочным кодом на номер <strong>+7 (925) 084-78-88.</strong></p>
       <p>Введите его в форме ниже для продолжения регистрации / авторизации.</p>
     </div>
-    <Field
+    <FieldCode
       label="Код из SMS*"
-      validErrorText="Не верный код"
-      :validError="$v.code.$error"
-      :maxLength="9"
+      :validErrorAPI="validErrorCodeAPI"
+      :validError="$v.code"
       v-model="code"
       @blur="validateField('code')"
-    >
-    </Field>
+    />
     <button class="btn btn-primary mt3 mb2" @click="submitHandler">Подтвердить</button>
     <repeat-send />
     <a href="#" class="link" @click.prevent="stepPhone">Изменить номер телефона</a>
@@ -22,29 +20,30 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
-import Field from '../Field.vue'
-import RepeatSend from '../RepeatSend.vue'
+import { required, minLength } from 'vuelidate/lib/validators'
+import FieldCode from '../fieldsInput/FieldCode.vue'
+import repeatSend from '../RepeatSend.vue'
 import { eventBus } from '../../js/main'
 import { STEP_DATA, STEP_PHONE } from '../../js/constants'
 
 export default {
   components: {
-    Field,
-    RepeatSend
+    FieldCode,
+    repeatSend
   },
   data () {
     return {
-      code: ''
+      code: '',
+      validErrorCodeAPI: {
+        isError: false,
+        message: ''
+      }
     }
   },
   validations: {
     code: {
-      required
-      // validSummaPromo (summa) {
-      //   const summaNoSpace = summa.replace(/\D/g, '')
-      //   return summaNoSpace >= 3000
-      // }
+      required,
+      minLength: minLength(6)
     }
   },
   methods: {

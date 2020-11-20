@@ -10,6 +10,7 @@
         placeholder=""
         :value="value"
         v-on="inputListeners"
+        @focus="setStartInput"
         v-mask="'+7 (###) ### - ## - ##'"
       />
       <slot name="icon"></slot>
@@ -35,6 +36,13 @@ export default {
     'validError',
     'validErrorAPI'
   ],
+  methods: {
+    setStartInput () {
+      if (!this.value.length) {
+        this.$emit('input', ' (')
+      }
+    }
+  },
   computed: {
     inputListeners: function () {
       let vm = this

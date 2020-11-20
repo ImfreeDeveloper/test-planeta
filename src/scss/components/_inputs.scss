@@ -68,6 +68,14 @@ input[type="text"], .wrp-input__field {
     i.rub {
       color: $color-red;
     }
+    .checkbox-custom {
+      border: .2rem solid $color-red;
+    }
+    .label {
+      a {
+        color: $color-red;
+      }
+    }
   }
 
   &__error {

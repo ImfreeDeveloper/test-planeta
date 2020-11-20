@@ -11,12 +11,11 @@
           name="checkbox-iagree"
           v-on="inputListeners"
           :value="value"
-          :class="{'input': true, 'is-danger': validError }"
-          checked
+          :checked="value"
         />
         <span class="checkbox-custom"></span>
         <span class="label">
-          <slot name="txt"></slot>
+          <slot name="label-descr"></slot>
         </span
         >
       </label>
@@ -42,7 +41,7 @@ export default {
         this.$listeners,
         {
           input: function (event) {
-            vm.$emit('input', event.target.value)
+            vm.$emit('input', event.target.checked)
           }
         }
       )

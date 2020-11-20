@@ -3,10 +3,11 @@
     <Header />
     <main class="content">
       <div class="wrap-content">
-        <registration-step1 v-if="step === steps.STEP_PHONE" />
-        <registration-step2 v-if="step === steps.STEP_SMS" />
-        <registration-step3 v-if="step === steps.STEP_DATA" />
-        <registration-step4 v-if="step === steps.STEP_QR" />
+        <registration-step-phone v-if="step === steps.STEP_PHONE" />
+        <registration-step-sms v-if="step === steps.STEP_SMS" />
+        <registration-step-data v-if="step === steps.STEP_DATA" />
+        <registration-step-qr v-if="step === steps.STEP_QR" />
+        <registration-step-last v-if="step === steps.STEP_LAST" />
       </div>
     </main>
     <Footer />
@@ -16,23 +17,25 @@
 <script>
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
-// import Registration from '../components/Registration.vue'
-import RegistrationStep1 from '../components/RegistrationPhone/RegistrationStep1.vue'
-import RegistrationStep2 from '../components/RegistrationPhone/RegistrationStep2.vue'
-import RegistrationStep3 from '../components/RegistrationPhone/RegistrationStep3.vue'
-import RegistrationStep4 from '../components/RegistrationQR.vue'
+import RegistrationStepPhone from '../components/registrationAuth/RegistrationStepPhone.vue'
+import RegistrationStepSms from '../components/registrationAuth/RegistrationStepSMS.vue'
+import RegistrationStepData from '../components/registrationAuth/RegistrationStepData.vue'
+import RegistrationStepQr from '../components/registrationQR/RegistrationStepQR.vue'
+import RegistrationStepLast from '../components/RegistrationStepLast.vue'
+
 import { eventBus } from '../js/main'
-import { STEP_PHONE, STEP_SMS, STEP_DATA, STEP_QR } from '../js/constants'
+import { STEP_PHONE, STEP_SMS, STEP_DATA, STEP_QR, STEP_LAST } from '../js/constants'
+import * as authApi from '../api/auth'
 
 export default {
   components: {
     Header,
     Footer,
-    RegistrationStep1,
-    RegistrationStep2,
-    RegistrationStep3,
-    RegistrationStep4
-    // Registration
+    RegistrationStepPhone,
+    RegistrationStepSms,
+    RegistrationStepData,
+    RegistrationStepQr,
+    RegistrationStepLast
   },
   data () {
     return {
@@ -40,15 +43,26 @@ export default {
         STEP_PHONE,
         STEP_SMS,
         STEP_DATA,
-        STEP_QR
+        STEP_QR,
+        STEP_LAST
       },
       step: STEP_PHONE
     }
   },
-  created () {
+  async created () {
+    try {
+      const data = await authApi.start()
+      setTimeout(() => {
+        console.log(data)
+        // eventBus.$emit('step', STEP_SMS)
+      }, 1000)
+    } catch (error) {
+      console.log(error)
+    }
     eventBus.$on('step', step => {
       this.step = step
     })
+
   }
 }
 </script>

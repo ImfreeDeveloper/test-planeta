@@ -48,8 +48,8 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import Field from '../Field.vue'
-import FieldSearch from '../FieldSearch.vue'
+import Field from '../fieldsInput/Field.vue'
+import FieldSearch from '../fieldsInput/FieldSearch.vue'
 import { eventBus } from '../../js/main'
 import { STEP_QR } from '../../js/constants'
 

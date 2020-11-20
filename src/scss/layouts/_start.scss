@@ -130,4 +130,8 @@ i.rub {
   overflow: hidden!important;
 }
 
+.disabled {
+  pointer-events: none;
+}
+
 [v-cloak] { display:none; }

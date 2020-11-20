@@ -50,11 +50,13 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import FieldSearch from './FieldSearch.vue'
-import FieldDate from './FieldDate.vue'
-import Field from './Field.vue'
-import AttachFile from './AttachFile.vue'
+import FieldSearch from '../fieldsInput/FieldSearch.vue'
+import FieldDate from '../fieldsInput/FieldDate.vue'
+import Field from '../fieldsInput/Field.vue'
+import AttachFile from '../fieldsInput/AttachFile.vue'
 import ScanQr from './ScanQr.vue'
+import { eventBus } from '../../js/main'
+import { STEP_LAST } from '../../js/constants'
 
 export default {
   components: {
@@ -131,9 +133,10 @@ export default {
     submitHandler () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        console.log(`Магазин: ${this.shop.name}`)
-        console.log(`Дата покупки: ${this.datePromo}`)
-        console.log(`Сумма покупки: ${this.summaPromo}`)
+        // console.log(`Магазин: ${this.shop.name}`)
+        // console.log(`Дата покупки: ${this.datePromo}`)
+        // console.log(`Сумма покупки: ${this.summaPromo}`)
+        eventBus.$emit('step', STEP_LAST)
       }
     },
     setFormat (e) {

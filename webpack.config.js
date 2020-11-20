@@ -120,7 +120,7 @@ const base = () => {
         {
           test: /\.vue$/,
           loader: 'vue-loader'
-        },
+        }
       ]
     },
     resolve: {
