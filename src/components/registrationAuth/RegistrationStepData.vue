@@ -9,6 +9,7 @@
       label="Электронная почта*"
       :validErrorText="textError.email"
       :validError="$v.email"
+      :successText="$v.email.email ? 'На этот email Вам придёт сообщение' : ''"
       v-model="email"
       @blur="validateField('email')"
     />
@@ -32,7 +33,7 @@
       :validErrorText="textError.city"
       :validError="$v.city"
       v-model="city"
-      @blur="validateField('city')"
+      @close="validateField('city')"
     />
     <FieldSearch
       label="Район*"
@@ -40,7 +41,7 @@
       :validErrorText="textError.district"
       :validError="$v.district"
       v-model="district"
-      @blur="validateField('district')"
+      @close="validateField('district')"
     />
     <button class="btn btn-primary mt3 mb2" @click="submitHandler">Далее</button>
   </div>
@@ -48,7 +49,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { required, email, minLength, requiredIf } from 'vuelidate/lib/validators'
+import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
 import Field from '../fieldsInput/Field.vue'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
 import { STEP_QR } from '../../js/constants'
@@ -77,12 +78,12 @@ export default {
         },
         name: {
           required: 'Поле «Имя» не заполнено',
-          minLength: 'Минимум 2 символа',
+          minLength: 'Поле должно содержать минимум 2 символа',
           ru: 'Некорректный формат. Поле должно содержать буквы русского алфавита.'
         },
         district: {
           required: 'Поле «Район» не заполнено',
-          sameAsCity: 'Сначала выберите город'
+          reqCity: 'Сначала выберите город'
         },
         city: {
           required: 'Поле «Город» не заполнено'
@@ -110,13 +111,14 @@ export default {
     },
     district: {
       required,
-      sameAsCity: requiredIf(function (nestedModel) {
-        return !this.isOptional && nestedModel.someFlag
-      })
+      reqCity (val) {
+        return !val || !!this.city
+      }
     },
     email: {
       required,
-      email
+      email,
+      minLength: minLength(6)
     },
     surname: {
       required,
@@ -145,7 +147,9 @@ export default {
         this.setUserData({
           surname: this.surname,
           name: this.name,
-          email: this.email
+          email: this.email,
+          district: this.district,
+          city: this.city
         })
       }
     },
@@ -160,10 +164,6 @@ export default {
         }
       })
     }
-  },
-  created () {
-    // LS.setStep(STEP_DATA)
-    // this.cities = LS.getCities()
   }
 }
 

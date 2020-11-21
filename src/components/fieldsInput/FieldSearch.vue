@@ -97,6 +97,7 @@ export default {
         document.addEventListener('click', this.handleOutsideClick)
       } else {
         document.removeEventListener('click', this.handleOutsideClick)
+        this.$emit('close')
       }
     }
   }

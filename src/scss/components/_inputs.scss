@@ -85,6 +85,12 @@ input[type="text"], .wrp-input__field {
     margin-top: .8rem;
   }
 
+  &__success {
+    display: block;
+    font-size: 1rem;
+    margin-top: .8rem;
+  }
+
   &__icon {
     position: absolute;
     bottom: 1rem;

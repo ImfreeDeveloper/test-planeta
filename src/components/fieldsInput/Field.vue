@@ -22,12 +22,9 @@
     >
       {{ err }}
     </p>
-    <!-- <p class="wrp-field__error" v-if="validError.$error && !validError[]">
-      Поле «Телефон» не заполнено
+    <p class="wrp-field__success" v-if="value.length && !validError.$error && successText">
+      {{ successText }}
     </p>
-    <p class="wrp-field__error" v-if="validError.$error && !validError[]">
-      Некорректный формат телефона
-    </p> -->
   </div>
 </template>
 
@@ -39,7 +36,8 @@ export default {
     'value',
     'validError',
     'validErrorText',
-    'maxLength'
+    'maxLength',
+    'successText'
   ],
   computed: {
     inputListeners: function () {
