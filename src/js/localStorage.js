@@ -1,64 +1,30 @@
-// let obj = {
-//   userData: {
-//     phone: '',
-//     code: '',
-//     step: ''
-//   },
-//   promo: data.results
-// }
-export function setPromo (promo) {
-  const ls = getStorage()
-  ls.promo = promo
-  setStorage(ls)
-}
+import { NAME_KEY_LS } from './constants'
 
 export function setStep (step) {
   const ls = getStorage()
-  if (ls.hasOwnProperty('userData')) {
-    ls.userData.step = step
-  } else {
-    ls.userData = { step }
-  }
+  ls.step = step
   setStorage(ls)
 }
 
 export function getStep () {
   const ls = getStorage()
-  if (ls.hasOwnProperty('userData')) {
-    return ls.userData.step || null
-  }
-  return null
+  return ls.step || null
 }
 
-export function setPhone (phone) {
+export function setUser (user) {
   const ls = getStorage()
-  if (ls.hasOwnProperty('userData')) {
-    ls.userData.phone = phone
-  } else {
-    ls.userData = { phone }
-  }
+  ls.user = user
   setStorage(ls)
 }
 
-export function getPhone () {
+export function getUser () {
   const ls = getStorage()
-  if (ls.hasOwnProperty('userData')) {
-    return ls.userData.phone || null
-  }
-  return null
-}
-
-export function getCities () {
-  const ls = getStorage()
-  if (ls.hasOwnProperty('promo')) {
-    return JSON.parse(ls.promo.cities) || null
-  }
-  return null
+  return ls.user || {}
 }
 
 function getStorage () {
-  return JSON.parse(localStorage.getItem('planeta-promo')) || {}
+  return JSON.parse(localStorage.getItem(NAME_KEY_LS)) || {}
 }
 function setStorage (store) {
-  return localStorage.setItem('planeta-promo', JSON.stringify(store))
+  return localStorage.setItem(NAME_KEY_LS, JSON.stringify(store))
 }

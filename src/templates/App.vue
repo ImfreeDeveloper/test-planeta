@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import Loader from '../components/Loader.vue'
@@ -27,10 +28,7 @@ import RegistrationStepQr from '../components/registrationQR/RegistrationStepQR.
 import RegistrationStepLast from '../components/RegistrationStepLast.vue'
 import RegistrationIsOver from '../components/RegistrationIsOver.vue'
 
-import { eventBus } from '../js/main'
 import { STEP_PHONE, STEP_SMS, STEP_DATA, STEP_QR, STEP_LAST, STEP_IS_OVER } from '../js/constants'
-import * as authApi from '../api/auth'
-import * as LS from '../js/localStorage'
 
 export default {
   components: {
@@ -53,32 +51,14 @@ export default {
         STEP_QR,
         STEP_LAST,
         STEP_IS_OVER
-      },
-      step: '',
-      loading: false
+      }
     }
   },
-  async created () {
-    this.loading = true
-    try {
-      const data = await authApi.start()
-      if (data.success) {
-        setTimeout(() => {
-          LS.setPromo(data.results)
-          this.step = LS.getStep() || STEP_PHONE
-          this.loading = false
-        }, 1000)
-      } else {
-        this.step = STEP_IS_OVER
-        this.loading = false
-      }
-    } catch (error) {
-      console.log(error)
-      this.loading = false
-    }
-    eventBus.$on('step', step => {
-      this.step = step
-    })
+  computed: {
+    ...mapGetters(['step', 'loading'])
+  },
+  created () {
+    this.$store.dispatch('load')
   }
 }
 </script>

@@ -47,12 +47,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { required, email, minLength, requiredIf } from 'vuelidate/lib/validators'
 import Field from '../fieldsInput/Field.vue'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
-import { eventBus } from '../../js/main'
-import { STEP_DATA, STEP_QR } from '../../js/constants'
-import * as LS from '../../js/localStorage'
+import { STEP_QR } from '../../js/constants'
 
 export default {
   components: {
@@ -135,13 +134,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setStep']),
     validateField (vmfield) {
       this.$v[vmfield].$touch()
     },
     submitHandler () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        eventBus.$emit('step', STEP_QR)
+        this.setStep(STEP_QR)
       }
     },
     getDistricts (city) {
@@ -157,8 +157,8 @@ export default {
     }
   },
   created () {
-    LS.setStep(STEP_DATA)
-    this.cities = LS.getCities()
+    // LS.setStep(STEP_DATA)
+    // this.cities = LS.getCities()
   }
 }
 

@@ -49,13 +49,13 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
 import FieldDate from '../fieldsInput/FieldDate.vue'
 import Field from '../fieldsInput/Field.vue'
 import AttachFile from '../fieldsInput/AttachFile.vue'
 import ScanQr from './ScanQr.vue'
-import { eventBus } from '../../js/main'
 import { STEP_LAST } from '../../js/constants'
 
 export default {
@@ -127,6 +127,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setStep']),
     validateField (vmfield) {
       this.$v[vmfield].$touch()
     },
@@ -136,7 +137,7 @@ export default {
         // console.log(`Магазин: ${this.shop.name}`)
         // console.log(`Дата покупки: ${this.datePromo}`)
         // console.log(`Сумма покупки: ${this.summaPromo}`)
-        eventBus.$emit('step', STEP_LAST)
+        this.setStep(STEP_LAST)
       }
     },
     setFormat (e) {

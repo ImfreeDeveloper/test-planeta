@@ -42,13 +42,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 import FieldPhone from '../fieldsInput/FieldPhone.vue'
 import FieldCheck from '../fieldsInput/FieldCheck.vue'
-import { eventBus } from '../../js/main'
-import { STEP_PHONE, STEP_SMS } from '../../js/constants'
-import * as authApi from '../../api/auth'
-import * as LS from '../../js/localStorage'
+import { STEP_SMS } from '../../js/constants'
 
 export default {
   components: {
@@ -79,6 +77,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setStep', 'setUserData']),
     validateField (vmfield) {
       this.$v[vmfield].$touch()
     },
@@ -92,8 +91,8 @@ export default {
         }
         setTimeout(() => {
           this.loading = false
-          LS.setPhone(this.phone)
-          eventBus.$emit('step', STEP_SMS)
+          this.setUserData({ phone: this.phone })
+          this.setStep(STEP_SMS)
         }, 600)
         // try {
         //   const data = await authApi.sendToken({ phone: this.phone })
@@ -113,9 +112,6 @@ export default {
         // }
       }
     }
-  },
-  mounted () {
-    LS.setStep(STEP_PHONE)
   }
 }
 </script>

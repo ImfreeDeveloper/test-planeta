@@ -3,7 +3,7 @@
     <h1 class="title">Регистрация / Авторизация</h1>
     <h2 class="subtitle">Подтверждение номера телефона</h2>
     <div class="text">
-      <p>Мы отправлили SMS с проверочным кодом на номер <strong>{{ phone }}</strong></p>
+      <p>Мы отправлили SMS с проверочным кодом на номер <strong>{{ user.phone }}</strong></p>
       <p>Введите его в форме ниже для продолжения регистрации / авторизации.</p>
     </div>
     <FieldCode
@@ -27,13 +27,11 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 import FieldCode from '../fieldsInput/FieldCode.vue'
 import repeatSend from '../RepeatSend.vue'
-import { eventBus } from '../../js/main'
-import { STEP_SMS, STEP_DATA, STEP_PHONE } from '../../js/constants'
-import * as authApi from '../../api/auth'
-import * as LS from '../../js/localStorage'
+import { STEP_DATA, STEP_PHONE } from '../../js/constants'
 
 export default {
   components: {
@@ -57,9 +55,13 @@ export default {
       minLength: minLength(6)
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   methods: {
+    ...mapActions(['setStep', 'setUserData']),
     stepPhone () {
-      eventBus.$emit('step', STEP_PHONE)
+      this.setStep(STEP_PHONE)
     },
     validateField (vmfield) {
       this.$v[vmfield].$touch()
@@ -74,7 +76,8 @@ export default {
         }
         setTimeout(() => {
           this.loading = false
-          eventBus.$emit('step', STEP_DATA)
+          this.setUserData({ smscode: this.code })
+          this.setStep(STEP_DATA)
         }, 600)
         // try {
         //   const data = await authApi.checkToken({
@@ -105,10 +108,6 @@ export default {
         // }
       }
     }
-  },
-  mounted () {
-    LS.setStep(STEP_SMS)
-    this.phone = LS.getPhone()
   }
 }
 </script>

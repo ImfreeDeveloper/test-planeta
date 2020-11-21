@@ -6,13 +6,13 @@ import Vuelidate from 'vuelidate'
 import VueTheMask from 'vue-the-mask'
 
 import App from '../templates/App.vue'
+import store from './store'
 
 Vue.use(Vuelidate)
 Vue.use(VueTheMask)
 
-export const eventBus = new Vue()
-
 /* eslint-disable no-new */
 new Vue({
+  store,
   render: h => h(App)
 }).$mount('#app')
