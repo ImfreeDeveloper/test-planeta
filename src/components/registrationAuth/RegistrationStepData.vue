@@ -49,7 +49,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
+import { required, email, minLength } from 'vuelidate/lib/validators'
 import Field from '../fieldsInput/Field.vue'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
 import { STEP_QR } from '../../js/constants'
@@ -140,6 +140,11 @@ export default {
     validateField (vmfield) {
       this.$v[vmfield].$touch()
     },
+    focusFirst () {
+      const elErrorValid = this.$children.find(el => el.$el.classList.contains('is-danger'))
+      console.log(elErrorValid)
+      this.$scrollTo(elErrorValid.$el)
+    },
     submitHandler () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
@@ -151,6 +156,8 @@ export default {
           district: this.district,
           city: this.city
         })
+      } else {
+        this.$nextTick(() => this.focusFirst())
       }
     },
     getDistricts (city) {
