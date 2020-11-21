@@ -34,8 +34,25 @@ body {
 }
 
 ul, ol {
+  padding: 0;
   li {
+    position: relative;
     list-style: none;
+  }
+  &.list-number {
+    counter-reset: list 0;
+    li {
+      padding-left: 1.5rem;
+      display: block;
+      margin-bottom: 1.5rem;
+      &:before {
+        content: counter(list) ". ";
+        counter-increment: list;
+        position: absolute;
+        left: 0;
+        font-weight: 600;
+      }
+    }
   }
 }
 
@@ -90,6 +107,12 @@ i.rub {
     font-weight: 500;
     margin-bottom: 1rem;
   }
+}
+
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 1.5rem;
 }
 
 .title {

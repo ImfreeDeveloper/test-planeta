@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { required, email, minLength, requiredIf } from 'vuelidate/lib/validators'
 import Field from '../fieldsInput/Field.vue'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
@@ -65,7 +65,6 @@ export default {
       name: '',
       district: '',
       city: '',
-      сities: [],
       textError: {
         email: {
           required: 'Поле «Электронная почта» не заполнено',
@@ -92,6 +91,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['cities']),
     сitiesItems () {
       return Object.keys(this.cities).map((city, idx) => {
         return {
@@ -134,7 +134,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setStep']),
+    ...mapActions(['setStep', 'setUserData']),
     validateField (vmfield) {
       this.$v[vmfield].$touch()
     },
@@ -142,6 +142,11 @@ export default {
       this.$v.$touch()
       if (!this.$v.$invalid) {
         this.setStep(STEP_QR)
+        this.setUserData({
+          surname: this.surname,
+          name: this.name,
+          email: this.email
+        })
       }
     },
     getDistricts (city) {

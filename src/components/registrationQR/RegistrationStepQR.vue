@@ -40,7 +40,7 @@
           </div>
         </template>
       </Field>
-      <AttachFile />
+      <attach-file v-model="file" />
       <button class="btn btn-primary" @click="submitHandler">
         Зарегистрировать купон
       </button>
@@ -54,7 +54,7 @@ import { required } from 'vuelidate/lib/validators'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
 import FieldDate from '../fieldsInput/FieldDate.vue'
 import Field from '../fieldsInput/Field.vue'
-import AttachFile from '../fieldsInput/AttachFile.vue'
+import AttachFile from '../attachFile/AttachFile.vue'
 import ScanQr from './ScanQr.vue'
 import { STEP_LAST } from '../../js/constants'
 
@@ -73,6 +73,7 @@ export default {
       shop: '',
       isErrorScan: false,
       showInfoReceipt: false,
+      file: null,
       itemsShops: [
         {
           id: 0,
@@ -133,8 +134,8 @@ export default {
     },
     submitHandler () {
       this.$v.$touch()
+      console.log(`Файл: ${this.file}`)
       if (!this.$v.$invalid) {
-        // console.log(`Магазин: ${this.shop.name}`)
         // console.log(`Дата покупки: ${this.datePromo}`)
         // console.log(`Сумма покупки: ${this.summaPromo}`)
         this.setStep(STEP_LAST)
