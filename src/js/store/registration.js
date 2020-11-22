@@ -55,6 +55,14 @@ export default {
         commit('setLoading', false)
       }
     },
+    async sendToken ({ commit, state }) {
+      try {
+        const data = await authApi.sendToken({ phone: state.user.phone })
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    },
     setStep ({ commit }, payload) {
       commit('setStep', payload)
     },
