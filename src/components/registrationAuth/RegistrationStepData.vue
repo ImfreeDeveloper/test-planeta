@@ -9,7 +9,7 @@
       label="Электронная почта*"
       :validErrorText="textError.email"
       :validError="$v.email"
-      :successText="$v.email.email ? 'На этот email Вам придёт сообщение' : ''"
+      :successText="$v.email.email ? 'На этот адрес мы отправим ваш купон.' : ''"
       v-model="email"
       @blur="validateField('email')"
     />

@@ -12,7 +12,7 @@
       </div>
       {{ fileName }}
     </button>
-    <load-attach
+    <load-attach-scan-qr
       v-if="openLoadAttach"
       @close="openLoadAttach = false"
       @file="setFile"
@@ -21,10 +21,11 @@
 </template>
 
 <script>
-import LoadAttach from './LoadAttach.vue'
+import loadAttachScanQr from '../attachFile/LoadAttachScanQr.vue'
+
 export default {
   components: {
-    LoadAttach
+    loadAttachScanQr
   },
   props: ['value'],
   data () {
@@ -46,7 +47,7 @@ export default {
 }
 
 function limitString (name, limit) {
-  return name.length <= limit ? name : name.substr(0, limit - 3) + '...'
+  return 'Чек загружен...'
+  // return name.length <= limit ? name : name.substr(0, limit - 3) + '...'
 }
-
 </script>
