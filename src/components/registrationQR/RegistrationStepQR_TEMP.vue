@@ -196,6 +196,7 @@ export default {
   },
   watch: {
     fileScanQr (val) {
+      console.log(val)
       this.getDataScan(val)
     }
   }

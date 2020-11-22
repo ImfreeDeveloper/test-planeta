@@ -25,7 +25,8 @@
       <div class="modal-popup-bottom">
         <div class="container">
           <div class="wrap-btn-attach">
-            <qrcode-capture :multiple="false" @decode="onDecode" />
+            <!-- <qrcode-capture :multiple="false" @decode="onDecode" /> -->
+            <qrcode-capture :multiple="false" @detect="onDetect" />
             <button class="btn btn-primary">
               Загрузить чек
             </button>
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-import { QrcodeCapture } from 'vue-qrcode-reader'
+import QrcodeCapture from './QrcodeCapture.vue'
 import { parseQrString } from '../../js/utils'
 export default {
   components: {
@@ -51,6 +52,18 @@ export default {
       } catch (error) {
         params = {}
       }
+      this.$emit('file', params)
+      this.$emit('close')
+    },
+    async onDetect (promise) {
+      let params = ''
+      try {
+        const { content } = await promise
+
+        if (content !== null) {
+          params = parseQrString(content)
+        }
+      } catch (error) {}
       this.$emit('file', params)
       this.$emit('close')
     }
