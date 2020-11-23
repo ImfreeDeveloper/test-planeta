@@ -56,8 +56,7 @@ export default {
       loading: false,
       destroyed: false,
       isStart: true,
-      isError: false,
-      availableCamera: null
+      isError: false
     }
   },
 
@@ -84,9 +83,8 @@ export default {
 
       try {
         await promise
-        this.availableCamera = 'available'
       } catch (error) {
-        this.availableCamera = 'notAvailable'
+        console.log(error)
       } finally {
         this.loading = false
       }
@@ -101,16 +99,6 @@ export default {
       this.$emit('handlerScan', { isError: false })
       this.camera = 'auto'
     }
-  },
-  watch: {
-    availableCamera (val) {
-      this.$emit('handlerAvailable', val)
-      this.isStart = true
-      this.camera = 'off'
-    }
-  },
-  mounted () {
-    this.startScan()
   }
 }
 

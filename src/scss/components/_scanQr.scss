@@ -11,7 +11,6 @@ $color-border-angel: #E04B24;
   margin: 2rem auto 5rem;
   box-sizing: border-box;
   position: relative;
-
   &__angles {
     &-left, &-right {
       position: absolute;
@@ -61,7 +60,6 @@ $color-border-angel: #E04B24;
       }
     }
   }
-
   &__start {
     text-align: center;
     &-text {
@@ -91,7 +89,6 @@ $color-border-angel: #E04B24;
       border: .1rem solid $color-border-scan;
     }
   }
-
   &__code {
     width: 90%;
     height: 90%;
@@ -111,5 +108,11 @@ $color-border-angel: #E04B24;
       align-items: center;
       font-size: 1.2rem;
     }
+  }
+  &-hidden {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
   }
 }
