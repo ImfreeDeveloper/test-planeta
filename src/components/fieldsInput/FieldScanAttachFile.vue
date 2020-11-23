@@ -15,8 +15,9 @@
     <load-attach-scan-qr
       v-if="openLoadAttach"
       @close="openLoadAttach = false"
-      @file="setFile"
+      @fileScan="setParams"
     />
+    <p class="error-txt" v-if="value === null">QR-код не распознается</p>
   </div>
 </template>
 
@@ -36,18 +37,17 @@ export default {
   },
   computed: {
     fileName () {
-      return this.value ? limitString(this.value.name, 30) : 'Нажмите чтобы загрузить фото'
+      return this.value ? limitString(this.value.file.name, 30) : 'Нажмите чтобы загрузить фото'
     }
   },
   methods: {
-    setFile (file) {
-      this.$emit('input', file)
+    setParams (params) {
+      this.$emit('input', params)
     }
   }
 }
 
 function limitString (name, limit) {
-  return 'Чек загружен...'
-  // return name.length <= limit ? name : name.substr(0, limit - 3) + '...'
+  return name.length <= limit ? name : name.substr(0, limit - 3) + '...'
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div
     class="wrp-field"
-    :class="{'is-danger': validError}"
+    :class="{'is-danger': validError, 'wrp-field_disabled': isDisabled}"
   >
     <label>{{ label }}</label>
     <div class="wrp-input">
@@ -11,6 +11,7 @@
         :value="value"
         v-on="inputListeners"
         v-mask="'##.##.####'"
+        :disabled="isDisabled"
       />
       <div class="wrp-field__icon">
         <svg class="icon-date">
@@ -30,7 +31,8 @@ export default {
     'label',
     'value',
     'validError',
-    'validErrorText'
+    'validErrorText',
+    'isDisabled'
   ],
   computed: {
     inputListeners: function () {

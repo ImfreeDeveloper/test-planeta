@@ -45,6 +45,10 @@ input[type="text"], .wrp-input__field {
     margin-bottom: 1rem;
   }
 
+  &_disabled {
+    pointer-events: none;
+  }
+
   .wrp-input {
     position: relative;
     &__field {

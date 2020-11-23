@@ -27,4 +27,3 @@ function getDate (dateTimeFormat) {
   let date = day + '.' + month + '.' + year
   return date
 }
-// t=20170609T114200&s=3000.00&fn=9999078900002273&i=43&fp=159733624&n=1

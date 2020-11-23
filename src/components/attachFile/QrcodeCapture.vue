@@ -5,7 +5,6 @@
     name="image"
     accept="image/*"
     capture="environment"
-    multiple
   />
 </template>
 
@@ -46,14 +45,15 @@ export default {
         return false
       }
 
-      return true
+      return file
     },
     onChangeInput (event) {
-      if (!this.fileInputChange(event)) return
-      const files = [...event.target.files]
-      const resultPromises = files.map(this.processFile)
-
-      resultPromises.forEach(this.onDetect)
+      const file = this.fileInputChange(event)
+      if (!file) return
+      this.processFile(file)
+      const resultPromises = this.processFile(file)
+      this.onDetect(resultPromises)
+      this.$emit('changeFile', file)
     },
 
     async processFile (file) {

@@ -1,7 +1,7 @@
 <template>
   <div
     class="wrp-field"
-    :class="{'is-danger': validError.$error}"
+    :class="{'is-danger': validError.$error, 'wrp-field_disabled': isDisabled}"
   >
     <label>{{ label }}</label>
     <div class="wrp-input">
@@ -11,6 +11,7 @@
         :value="value"
         v-on="inputListeners"
         :maxlength="maxLength ? maxLength : null"
+        :disabled="isDisabled"
       />
       <slot name="icon"></slot>
     </div>
@@ -37,7 +38,8 @@ export default {
     'validError',
     'validErrorText',
     'maxLength',
-    'successText'
+    'successText',
+    'isDisabled'
   ],
   computed: {
     inputListeners: function () {

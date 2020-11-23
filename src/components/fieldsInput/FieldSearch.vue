@@ -1,6 +1,6 @@
 <template>
   <div class="wrp-field"
-    :class="{'is-danger': validError.$error}"
+    :class="{'is-danger': validError.$error, 'wrp-field_disabled': isDisabled}"
   >
     <label>{{ label }}</label>
     <div class="wrp-input" :ref="'wrap_search_' + _uid">
@@ -20,6 +20,7 @@
             :value="searchItem"
             @input="updateSearch($event.target.value)"
             :ref="'search_' + _uid"
+            :disabled="isDisabled"
           />
           <div class="search__icon">
             <svg class="icon-search">
@@ -61,7 +62,14 @@ export default {
       itemsFilter: []
     }
   },
-  props: ['label', 'value', 'validError', 'validErrorText', 'items'],
+  props: [
+    'label',
+    'value',
+    'validError',
+    'validErrorText',
+    'items',
+    'isDisabled'
+  ],
   methods: {
     openSearch () {
       this.open = true
