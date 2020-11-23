@@ -21,7 +21,7 @@
       v-model="iagreePD"
     >
       <template slot="label-descr">
-        Согласен <a href="#" target="_blank">правилами</a> обработки
+        Согласен с <a href="#" target="_blank">правилами</a> обработки
         персональных данных
       </template>
     </FieldCheck>

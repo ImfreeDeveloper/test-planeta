@@ -3,7 +3,7 @@
     <h1 class="title">Регистрация / Авторизация</h1>
     <h2 class="subtitle">Подтверждение номера телефона</h2>
     <div class="text">
-      <p>Мы отправлили SMS с проверочным кодом на номер <strong>{{ user.phone }}</strong></p>
+      <p>Мы отправлили SMS с проверочным кодом на номер <strong class="txt-no-wrap">{{ user.phone }}</strong></p>
       <p>Введите его в форме ниже для продолжения регистрации / авторизации.</p>
     </div>
     <FieldCode

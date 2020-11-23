@@ -37,6 +37,7 @@
     />
     <FieldSearch
       label="Район*"
+      v-if="!other"
       :items="districtsItems"
       :validErrorText="textError.district"
       :validError="$v.district"
@@ -103,6 +104,9 @@ export default {
     },
     districtsItems () {
       return this.getDistricts(this.city)
+    },
+    other () {
+      return this.city.name === 'Другой'
     }
   },
   validations: {
@@ -142,10 +146,12 @@ export default {
     },
     focusFirst () {
       const elErrorValid = this.$children.find(el => el.$el.classList.contains('is-danger'))
-      console.log(elErrorValid)
       this.$scrollTo(elErrorValid.$el)
     },
     submitHandler () {
+      if (this.other) {
+        this.district = this.districtsItems.find(d => d.name === 'Другой')
+      }
       this.$v.$touch()
       if (!this.$v.$invalid) {
         this.setStep(STEP_QR)
