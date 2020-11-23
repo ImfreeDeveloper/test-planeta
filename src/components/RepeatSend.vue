@@ -7,7 +7,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-const timeInSeconds = 20
+const timeInSeconds = 59
 
 export default {
   data () {

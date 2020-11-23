@@ -45,7 +45,7 @@ export default {
             commit('setStep', LS.getStep() || STEP_PHONE)
             commit('setUserData', LS.getUser())
             commit('setLoading', false)
-          }, 1000)
+          }, 600)
         } else {
           commit('setStep', STEP_IS_OVER)
           commit('setLoading', false)

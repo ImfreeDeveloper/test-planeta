@@ -156,6 +156,7 @@ i.rub {
 
 .content {
   flex: 1 0 auto;
+  position: relative;
 }
 
 .hidden {
@@ -164,6 +165,10 @@ i.rub {
 
 .disabled {
   pointer-events: none;
+}
+
+.registartion {
+  position: relative;
 }
 
 [v-cloak] { display:none; }

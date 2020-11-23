@@ -24,7 +24,7 @@ import Loader from '../components/Loader.vue'
 import RegistrationStepPhone from '../components/registrationAuth/RegistrationStepPhone.vue'
 import RegistrationStepSms from '../components/registrationAuth/RegistrationStepSMS.vue'
 import RegistrationStepData from '../components/registrationAuth/RegistrationStepData.vue'
-import RegistrationStepQr from '../components/registrationQR/RegistrationStepQR_TEMP.vue'
+import RegistrationStepQr from '../components/registrationQR/RegistrationStepQR.vue'
 import RegistrationStepLast from '../components/RegistrationStepLast.vue'
 import RegistrationIsOver from '../components/RegistrationIsOver.vue'
 

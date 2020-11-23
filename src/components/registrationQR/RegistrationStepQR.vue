@@ -2,54 +2,59 @@
   <div class="registartion">
     <h1 class="title">Авто за 3000 <i class="rub"></i></h1>
     <h2 class="subtitle">Регистрация чека</h2>
-    <FieldSearch
-      label="Магазин покупки*"
-      :items="itemsShops"
-      validErrorText="Магазин не выбран"
-      :validError="$v.shop.$error"
-      v-model="shop"
-      @blur="validateField('shop')"
-    />
-    <ScanQr @handlerScan="getDataScan" />
-    <button
-      class="btn btn-primary"
-      :disabled="!isErrorScan"
-      v-if="!showInfoReceipt"
-      @click="isErrorScan ? showInfoReceipt = true : false"
-    >Ввести данные из чека</button>
-    <div class="registartion__info-receipt" v-if="showInfoReceipt">
-      <FieldDate
-        label="Дата покупки*"
-        validErrorText="Дата покупки не соответствует условиям акции."
-        :validError="$v.datePromo.$error"
-        v-model="datePromo"
-        @blur="validateField('datePromo')"
+    <div v-show="availableCamera === 'available'">
+      <FieldSearch
+        label="Магазин покупки*"
+        :items="storesItems"
+        :validErrorText="{'required' : 'Магазин не выбран'}"
+        :validError="$v.store"
+        v-model="store"
+        @blur="validateField('store')"
+        :isDisabled="isDisabledField && isDisabledStore"
       />
-      <Field
-        label="Сумма покупки*"
-        validErrorText="Сумма покупки не соответствует условиям акции"
-        :validError="$v.summaPromo.$error"
-        :maxLength="9"
-        v-model="summaPromo"
-        @keyup="setFormat"
-        @blur="validateField('summaPromo')"
-      >
-        <template slot="icon">
-          <div class="wrp-field__icon wrp-field__icon-rub">
-            <i class="rub"></i>
-          </div>
-        </template>
-      </Field>
-      <attach-file v-model="file" />
-      <button class="btn btn-primary" @click="submitHandler">
-        Зарегистрировать купон
-      </button>
+      <ScanQr @handlerScan="fetchStore" @handlerAvailable="setAvailableCamera"/>
+      <button
+        class="btn btn-primary"
+        :disabled="!isErrorScan"
+        v-if="!showInfoReceipt"
+        @click="isErrorScan ? showInfoReceipt = true : false"
+      >Ввести данные из чека</button>
+      <div class="registartion__info-receipt" v-if="showInfoReceipt">
+        <FieldDate
+          label="Дата покупки*"
+          validErrorText="Дата покупки не соответствует условиям акции."
+          :validError="$v.datePromo.$error"
+          v-model="datePromo"
+          @blur="validateField('datePromo')"
+          :isDisabled="isDisabledField"
+        />
+        <Field
+          label="Сумма покупки*"
+          :validError="$v.summaPromo"
+          :maxLength="9"
+          v-model="summaPromo"
+          @keyup="setFormat"
+          @blur="validateField('summaPromo')"
+          :isDisabled="isDisabledField"
+        >
+          <template slot="icon">
+            <div class="wrp-field__icon wrp-field__icon-rub">
+              <i class="rub"></i>
+            </div>
+          </template>
+        </Field>
+        <attach-file v-model="file" />
+        <button class="btn btn-primary" @click="submitHandler">
+          Зарегистрировать купон
+        </button>
+      </div>
     </div>
+    <registration-not-camera v-if="availableCamera === 'notAvailable'"/>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import FieldSearch from '../fieldsInput/FieldSearch.vue'
 import FieldDate from '../fieldsInput/FieldDate.vue'
@@ -57,6 +62,8 @@ import Field from '../fieldsInput/Field.vue'
 import AttachFile from '../attachFile/AttachFile.vue'
 import ScanQr from './ScanQr.vue'
 import { STEP_LAST } from '../../js/constants'
+import RegistrationNotCamera from './RegistrationNotCamera.vue'
+import * as infoApi from '../../js/api/info'
 
 export default {
   components: {
@@ -64,46 +71,36 @@ export default {
     FieldDate,
     Field,
     AttachFile,
-    ScanQr
+    ScanQr,
+    RegistrationNotCamera
   },
   data () {
     return {
       datePromo: '',
       summaPromo: '',
-      shop: '',
+      store: '',
       isErrorScan: false,
       showInfoReceipt: false,
+      loading: false,
       file: null,
-      itemsShops: [
-        {
-          id: 0,
-          name: 'Adidas'
-        },
-        {
-          id: 1,
-          name: 'Adidas origin'
-        },
-        {
-          id: 2,
-          name: 'Oysx'
-        },
-        {
-          id: 3,
-          name: 'Bershka'
-        },
-        {
-          id: 4,
-          name: 'Pull & Bear'
-        },
-        {
-          id: 5,
-          name: 'Zara'
+      availableCamera: null,
+      isDisabledField: false,
+      isDisabledStore: false
+    }
+  },
+  computed: {
+    ...mapGetters(['stores']),
+    storesItems () {
+      return Object.keys(this.stores).map((store, idx) => {
+        return {
+          id: idx,
+          name: store
         }
-      ]
+      })
     }
   },
   validations: {
-    shop: {
+    store: {
       required
     },
     summaPromo: {
@@ -148,6 +145,7 @@ export default {
         .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
     },
     getDataScan (data) {
+      console.log(data)
       if (data.date) {
         const summaPromo = data.summa
           .replace(/\..*/, '')
@@ -162,8 +160,34 @@ export default {
         this.datePromo = ''
         this.summaPromo = ''
       }
-      this.isErrorScan = data.isError
+    },
+    setAvailableCamera (val) {
+      this.availableCamera = val
+      this.$store.commit('setLoading', false)
+    },
+    async fetchStore (params) {
+      this.isErrorScan = params.isError
+      if (params.isError) return
+      this.loading = true
+      try {
+        const data = await infoApi.getStore({ fnn: params.fn })
+        if (data.success) {}
+        setTimeout(() => {
+          console.log(data)
+          this.getDataScan(params)
+          this.isDisabledStore = data.success
+          this.isDisabledField = true
+          this.loading = false
+        }, 600)
+      } catch (error) {
+        this.loading = false
+        console.log(error)
+      }
     }
+  },
+  mounted () {
+    this.$store.commit('setLoading', true)
+    console.log(window.ga.getAll()[0].get('clientId'))
   }
 }
 </script>

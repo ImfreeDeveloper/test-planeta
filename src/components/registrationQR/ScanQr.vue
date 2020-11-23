@@ -45,6 +45,7 @@
 
 <script>
 import { QrcodeStream } from 'vue-qrcode-reader'
+import { parseQrString } from '../../js/utils'
 export default {
   components: {
     QrcodeStream
@@ -55,7 +56,8 @@ export default {
       loading: false,
       destroyed: false,
       isStart: true,
-      isError: false
+      isError: false,
+      availableCamera: null
     }
   },
 
@@ -66,16 +68,10 @@ export default {
     },
     onDecode (content) {
       try {
-        const params = content.split('&')
+        const params = parseQrString(content)
+        params.isError = false
 
-        const date = getDate(params[0].split('t=')[1])
-        const summa = params[1].split('s=')[1]
-
-        this.$emit('handlerScan', {
-          date,
-          summa,
-          isError: false
-        })
+        this.$emit('handlerScan', params)
       } catch (error) {
         this.isError = true
         this.$emit('handlerScan', { isError: true })
@@ -88,8 +84,9 @@ export default {
 
       try {
         await promise
+        this.availableCamera = 'available'
       } catch (error) {
-        console.error(error)
+        this.availableCamera = 'notAvailable'
       } finally {
         this.loading = false
       }
@@ -104,19 +101,17 @@ export default {
       this.$emit('handlerScan', { isError: false })
       this.camera = 'auto'
     }
+  },
+  watch: {
+    availableCamera (val) {
+      this.$emit('handlerAvailable', val)
+      this.isStart = true
+      this.camera = 'off'
+    }
+  },
+  mounted () {
+    this.startScan()
   }
-}
-
-function getDate (dateTimeFormat) {
-  let dateAsString = dateTimeFormat.split('')
-  let year = dateAsString.splice(0, 4).join('')
-  let month = dateAsString.splice(0, 2).join('')
-  let day = dateAsString.splice(0, 2).join('')
-  // let hours = dateAsString.splice(1, 2).join('')
-  // let minutes = dateAsString.splice(1, 2).join('')
-  // let seconds = dateAsString.splice(1, 2).join('')
-  let date = day + '.' + month + '.' + year
-  return date
 }
 
 </script>

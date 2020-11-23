@@ -1,8 +1,6 @@
 <template>
   <div class="registartion">
-    <h1 class="title">Авто за 3000 <i class="rub"></i></h1>
-    <h2 class="subtitle">Регистрация чека</h2>
-
+    <Loader v-if="loading" />
     <FieldSearch
       label="Магазин покупки*"
       :items="storesItems"
@@ -52,6 +50,7 @@ import FieldDate from '../fieldsInput/FieldDate.vue'
 import Field from '../fieldsInput/Field.vue'
 import fieldScanAttachFile from '../fieldsInput/FieldScanAttachFile.vue'
 import { STEP_LAST } from '../../js/constants'
+import Loader from '../../components/Loader.vue'
 import * as infoApi from '../../js/api/info'
 
 export default {
@@ -59,7 +58,8 @@ export default {
     FieldSearch,
     FieldDate,
     Field,
-    fieldScanAttachFile
+    fieldScanAttachFile,
+    Loader
   },
   data () {
     return {
@@ -67,11 +67,11 @@ export default {
       summaPromo: '',
       store: '',
       isErrorScan: false,
-      showInfoReceipt: false,
       fileScanQr: '',
       isDisabledField: false,
       isDisabledStore: false,
-      isShowField: false
+      isShowField: false,
+      loading: false
     }
   },
   computed: {
@@ -128,33 +128,50 @@ export default {
         .replace(/\D/g, '')
         .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
     },
-    getDataScan (data) {
-      if (data.date) {
-        const summaPromo = data.summa
+    getDataScan (params) {
+      if (params.date) {
+        const summaPromo = params.summa
           .replace(/\..*/, '')
           .replace(/\D/g, '')
           .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
-        this.showInfoReceipt = true
-        this.datePromo = data.date
+        this.datePromo = params.date
         this.summaPromo = summaPromo
-        this.$v.$touch()
-      } else {
-        this.showInfoReceipt = false
-        this.datePromo = ''
-        this.summaPromo = ''
-      }
-      this.isErrorScan = data.isError
-    },
-    async fetchStore (params) {
-      try {
-        const data = await infoApi.getStore({ fnn: params.fn })
-        if (data.success) {}
-        console.log(data)
-        this.getDataScan(params)
-        this.isDisabledStore = data.success
         this.isDisabledField = true
         this.isShowField = true
+        this.fetchStore(params)
+        this.$v.$touch()
+      } else {
+        this.datePromo = ''
+        this.summaPromo = ''
+        this.isDisabledField = false
+        this.isShowField = false
+      }
+      this.isErrorScan = params.isError
+    },
+    async fetchStore (params) {
+      this.loading = true
+      try {
+        const data = await infoApi.getStore({ fnn: params.fn })
+        setTimeout(() => {
+          if (data.success) {
+            const currentStore = this.storesItems.filter(store => store.name === data.results.store)
+            if (currentStore.length) {
+              this.store = currentStore[0]
+              this.isDisabledStore = true
+            } else {
+              this.isDisabledStore = false
+              this.store = ''
+            }
+          } else {
+            this.isDisabledStore = false
+            this.store = ''
+          }
+          this.loading = false
+        }, 600)
       } catch (error) {
+        this.loading = false
+        this.isDisabledStore = false
+        this.store = ''
         console.log(error)
       }
     }
@@ -162,7 +179,7 @@ export default {
   watch: {
     fileScanQr (params) {
       if (params) {
-        this.fetchStore(params)
+        this.getDataScan(params)
       } else {
         this.isShowField = false
       }

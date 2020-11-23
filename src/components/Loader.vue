@@ -1,7 +1,5 @@
 <template>
-  <div class="loader">
-    Загрузка
-  </div>
+  <div class="loader"></div>
 </template>
 
 <script>
