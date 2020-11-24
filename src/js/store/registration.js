@@ -80,7 +80,7 @@ export default {
     step: state => state.step,
     loading: state => state.loading,
     promo: state => state.loading,
-    stores: state => JSON.parse(state.promo.stores),
+    stores: state => state.promo.stores,
     user: state => state.user,
     cities: state => JSON.parse(state.promo.cities)
   }

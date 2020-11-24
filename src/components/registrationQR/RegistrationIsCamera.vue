@@ -1,5 +1,5 @@
 <template>
-  <div class="registartion">
+  <div>
     <FieldSearch
       label="Магазин покупки*"
       :items="storesItems"

@@ -28,13 +28,14 @@
   fill: #C4C4C4;
 }
 
-.wrp-field {
-  &.is-danger {
-    .icon-date {
-      fill: $color-red;
-    }
-    .icon-arrow {
-      fill: $color-red;
-    }
+.is-danger {
+  .icon-date {
+    fill: $color-red;
+  }
+  .icon-arrow {
+    fill: $color-red;
+  }
+  .icon-clip {
+    stroke: $color-red;
   }
 }

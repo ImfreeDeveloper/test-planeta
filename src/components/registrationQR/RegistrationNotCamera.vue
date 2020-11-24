@@ -1,5 +1,5 @@
 <template>
-  <div class="registartion">
+  <div>
     <Loader v-if="loading" />
     <FieldSearch
       label="Магазин покупки*"
@@ -30,7 +30,11 @@
       @blur="validateField('summaPromo')"
       :isDisabled="isDisabledField"
     />
-    <field-scan-attach-file v-model="fileScanQr" />
+    <scan-attach-file
+      validErrorText="QR-код не распознается"
+      :validError="$v.fileScanQr"
+      v-model="fileScanQr"
+    />
     <button
       class="btn btn-primary"
       @click="submitHandler"
@@ -43,14 +47,14 @@
 </template>
 
 <script>
-import fieldScanAttachFile from '../fieldsInput/FieldScanAttachFile.vue'
+import scanAttachFile from '../attachFile/ScanAttachFile.vue'
 import { STEP_LAST } from '../../js/constants'
 import Loader from '../../components/Loader.vue'
 import RegistrationCamera from '../../mixins/RegistrationCamera.vue'
 
 export default {
   components: {
-    fieldScanAttachFile,
+    scanAttachFile,
     Loader
   },
   data () {
@@ -69,6 +73,7 @@ export default {
       }
     },
     getDataScan (params) {
+      console.log(params)
       if (params.date) {
         const summaPromo = params.summa
           .replace(/\..*/, '')
@@ -90,6 +95,7 @@ export default {
   },
   watch: {
     fileScanQr (params) {
+      this.validateField('fileScanQr')
       if (params) {
         this.getDataScan(params)
       } else {

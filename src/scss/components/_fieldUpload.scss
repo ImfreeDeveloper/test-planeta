@@ -29,11 +29,21 @@
       }
     }
   }
-
   &__title {
     display: block;
     margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: 500;
+  }
+  &.is-danger {
+    > .btn {
+      border-color: $color-red;
+      color: $color-red;
+    }
+    .attachfile {
+      &__title {
+        color: $color-red;
+      }
+    }
   }
 }
