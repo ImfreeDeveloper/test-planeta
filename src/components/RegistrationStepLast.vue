@@ -1,6 +1,6 @@
 <template>
   <div class="registartion">
-    <h1 class="title">Авто за 3000 <i class="rub"></i></h1>
+    <h1 class="title">Регистрация в акции «Ужасно чёрная пятница»</h1>
     <h2 class="subtitle">Поздравляем!</h2>
     <div class="text">
       <p>Ваш чек успешно зарегистрирован.</p>

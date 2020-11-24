@@ -1,6 +1,6 @@
 <template>
   <div class="registartion">
-    <h1 class="title">Авто за 3000 <i class="rub"></i></h1>
+    <h1 class="title">Регистрация в акции «Ужасно чёрная пятница»</h1>
     <h2 class="subtitle">Регистрация чека</h2>
     <Scan-qr-for-available v-model="availableCamera" v-if="availableCamera === null" />
     <registration-not-camera v-if="availableCamera === 'notAvailable'"/>
