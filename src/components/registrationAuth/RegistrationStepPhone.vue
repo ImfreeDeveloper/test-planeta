@@ -68,7 +68,7 @@ export default {
   validations: {
     phone: {
       required,
-      minLength: minLength(22)
+      minLength: minLength(16)
     },
     iagreePD: {
       sameAs (check) {

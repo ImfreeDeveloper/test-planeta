@@ -49,6 +49,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
     "axios": "^0.21.0",
+    "js-cookie": "^2.2.1",
     "vue": "^2.6.10",
     "vue-qrcode-reader": "^2.3.14",
     "vue-router": "^3.1.6",

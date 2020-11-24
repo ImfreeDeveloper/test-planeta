@@ -6,6 +6,7 @@
       :validErrorText="{'required' : 'Магазин не выбран'}"
       :validError="$v.store"
       v-model="store"
+      v-if="showInfoReceipt"
       @blur="validateField('store')"
       :isDisabled="isDisabledField && isDisabledStore"
     />

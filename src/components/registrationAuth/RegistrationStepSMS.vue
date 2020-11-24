@@ -32,6 +32,7 @@ import { required, minLength } from 'vuelidate/lib/validators'
 import FieldCode from '../fieldsInput/FieldCode.vue'
 import repeatSend from '../RepeatSend.vue'
 import { STEP_DATA, STEP_PHONE } from '../../js/constants'
+import Cookies from 'js-cookie'
 
 export default {
   components: {
@@ -41,7 +42,6 @@ export default {
   data () {
     return {
       code: '',
-      phone: '',
       loading: false,
       validErrorCodeAPI: {
         isError: false,
@@ -77,6 +77,8 @@ export default {
         setTimeout(() => {
           this.loading = false
           this.setUserData({ smscode: this.code })
+          // Запись в куки
+          Cookies.set('c_auth', `${this.user.phone}_${this.code}`, { expires: 3 })
           this.setStep(STEP_DATA)
         }, 600)
         // try {

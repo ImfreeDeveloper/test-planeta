@@ -1,4 +1,4 @@
-.loader {
+.loader, .loading-indicator {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -22,6 +22,14 @@
     animation: cb_load 1s linear 1s normal infinite;
     animation-delay: 0s;
     transition: opacity .3s ease;
+  }
+}
+
+.loading-indicator {
+  &:before {
+    top: 0;
+    left: 0;
+    margin: 0;
   }
 }
 

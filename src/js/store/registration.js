@@ -1,6 +1,7 @@
 import * as authApi from '../api/auth'
-import { STEP_PHONE, STEP_IS_OVER } from '../constants'
+import { STEP_PHONE, STEP_SMS, STEP_IS_OVER } from '../constants'
 import * as LS from '../localStorage'
+import Cookies from 'js-cookie'
 
 export default {
   state: {
@@ -23,8 +24,13 @@ export default {
       state.promo = promo
     },
     setStep (state, step) {
-      state.step = step
-      LS.setStep(step)
+      if (step !== STEP_PHONE && step !== STEP_SMS && step !== STEP_IS_OVER) {
+        const cookieAuth = Cookies.get('c_auth')
+        state.step = cookieAuth ? step : STEP_PHONE
+      } else {
+        state.step = step
+      }
+      LS.setStep(state.step)
     },
     setUserData (state, data) {
       state.user = {

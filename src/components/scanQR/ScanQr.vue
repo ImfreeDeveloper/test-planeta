@@ -34,9 +34,7 @@
           @decode="onDecode"
           @init="onInit"
         >
-          <span class="loading-indicator" v-if="loading">
-            Загрузка...
-          </span>
+          <span class="loading-indicator" v-if="loading"></span>
         </qrcode-stream>
       </div>
     </div>
@@ -76,6 +74,7 @@ export default {
         this.$emit('handlerScan', { isError: true })
       } finally {
         this.camera = 'off'
+        console.log(content)
       }
     },
     async onInit (promise) {
