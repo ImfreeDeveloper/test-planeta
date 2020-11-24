@@ -11,7 +11,7 @@
         :value="value"
         v-on="inputListeners"
         @focus="setStartInput"
-        v-mask="'+7(###)###-##-##'"
+        v-mask="'+7 (###) ###-##-##'"
       />
       <slot name="icon"></slot>
     </div>

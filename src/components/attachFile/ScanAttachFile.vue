@@ -1,7 +1,7 @@
 <template>
   <div
     class="attachfile"
-    :class="{'is-danger': validError.$error}"
+    :class="{'is-danger': validError ? validError.$error : false}"
   >
     <p class="attachfile__title">Фото чека (.jpg, .png, не более 8 Мб)*</p>
     <button
@@ -20,7 +20,7 @@
       @close="openLoadAttach = false"
       @fileScan="setParams"
     />
-    <p class="error-txt" v-if="validError.$error">
+    <p class="error-txt" v-if="validError ? validError.$error : false">
       {{ validErrorText }}
     </p>
   </div>

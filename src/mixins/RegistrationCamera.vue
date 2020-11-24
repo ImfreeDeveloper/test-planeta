@@ -1,10 +1,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { required } from 'vuelidate/lib/validators'
 import FieldSearch from '../components/fieldsInput/FieldSearch.vue'
 import FieldDate from '../components/fieldsInput/FieldDate.vue'
 import Field from '../components/fieldsInput/Field.vue'
 import * as infoApi from '../js/api/info'
+import { STEP_LAST } from '../js/constants'
+import { parseDateForSend } from '../js/utils'
 
 export default {
   components: {
@@ -17,13 +18,15 @@ export default {
       datePromo: '',
       summaPromo: '',
       store: '',
+      fileScanQr: '',
       isDisabledField: false,
       isDisabledStore: false,
-      isShowField: false
+      isShowField: false,
+      loadingSend: false
     }
   },
   computed: {
-    ...mapGetters(['stores']),
+    ...mapGetters(['stores', 'user']),
     storesItems () {
       return Object.keys(this.stores).map((store, idx) => {
         return {
@@ -31,34 +34,6 @@ export default {
           name: store
         }
       })
-    }
-  },
-  validations: {
-    fileScanQr: {
-      required
-    },
-    store: {
-      required
-    },
-    summaPromo: {
-      required,
-      validSummaPromo (summa) {
-        const summaNoSpace = summa.replace(/\D/g, '')
-        return summaNoSpace >= 3000
-      }
-    },
-    datePromo: {
-      required,
-      validDatePromo (dt) {
-        // Задаем условия акции с 1.10.2020 по текущую дату
-        const startDatePromo = new Date(2020, 9, 1)
-        const currentDatePromo = new Date()
-        // Проверим введеную дату
-        const arrD = dt.split('.')
-        arrD[1] -= 1
-        const d = new Date(arrD[2], arrD[1], arrD[0])
-        return d >= startDatePromo && d <= currentDatePromo
-      }
     }
   },
   methods: {
@@ -98,6 +73,58 @@ export default {
         this.store = ''
         console.log(error)
       }
+    },
+    async submitHandler () {
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        this.loadingSend = true
+        console.log(this.file)
+        const fileBase64 = await this.toBase64(this.fileScanQr.file || this.file)
+        const obj = {
+          phone: this.user.phone,
+          email: this.user.email,
+          send_in_sms: false,
+          last_name: this.user.surname,
+          first_name: this.user.name,
+          city: this.user.city.name,
+          district: this.user.district.name,
+          store: this.store.name,
+          use_loyalty_card: false,
+          invoice_photo: fileBase64,
+          invoice_fn: this.fileScanQr.fn,
+          invoice_fp: this.fileScanQr.fp,
+          invoice_i: this.fileScanQr.i,
+          no_qr: false,
+          amount: this.summaPromo.replace(/\s/g, ''),
+          purchase_date: parseDateForSend(this.datePromo),
+          personal_data: true,
+          personal_communication: true,
+          google_client_id: window.ga.getAll()[0].get('clientId')
+        }
+        try {
+          const data = await infoApi.send(obj)
+          setTimeout(() => {
+            console.log(data)
+            if (data.success) {
+              this.setStep(STEP_LAST)
+            } else {
+              alert('Ошибка регистрации')
+            }
+            this.loadingSend = false
+          }, 600)
+        } catch (error) {
+          alert('Ошибка регистрации')
+          this.loadingSend = false
+        }
+      }
+    },
+    toBase64 (file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = error => reject(error)
+      })
     }
   }
 }

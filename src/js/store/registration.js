@@ -12,7 +12,9 @@ export default {
       smscode: '',
       surname: '',
       name: '',
-      email: ''
+      email: '',
+      city: '',
+      district: ''
     },
     promo: {}
   },
@@ -80,7 +82,7 @@ export default {
     step: state => state.step,
     loading: state => state.loading,
     promo: state => state.loading,
-    stores: state => state.promo.stores,
+    stores: state => JSON.parse(state.promo.stores),
     user: state => state.user,
     cities: state => JSON.parse(state.promo.cities)
   }

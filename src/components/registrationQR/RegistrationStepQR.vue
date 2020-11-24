@@ -31,7 +31,6 @@ export default {
   },
   mounted () {
     this.$store.commit('setLoading', true)
-    console.log(window.ga.getAll()[0].get('clientId'))
   }
 }
 </script>

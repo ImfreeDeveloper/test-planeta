@@ -1,5 +1,7 @@
 <template>
-  <div class="attachfile">
+  <div class="attachfile"
+    :class="{'is-danger': validError.$error}"
+  >
     <p class="attachfile__title">Фото чека (.jpg, .png, не более 8 Мб)*</p>
     <button
       class="btn btn-dashed"
@@ -17,6 +19,9 @@
       @close="openLoadAttach = false"
       @file="setFile"
     />
+    <p class="error-txt" v-if="validError.$error">
+      {{ validErrorText }}
+    </p>
   </div>
 </template>
 
@@ -26,7 +31,11 @@ export default {
   components: {
     LoadAttach
   },
-  props: ['value'],
+  props: [
+    'value',
+    'validError',
+    'validErrorText'
+  ],
   data () {
     return {
       openLoadAttach: false,

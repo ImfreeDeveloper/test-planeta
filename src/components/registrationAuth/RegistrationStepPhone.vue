@@ -47,6 +47,7 @@ import { required, minLength } from 'vuelidate/lib/validators'
 import FieldPhone from '../fieldsInput/FieldPhone.vue'
 import FieldCheck from '../fieldsInput/FieldCheck.vue'
 import { STEP_SMS } from '../../js/constants'
+import * as authApi from '../../js/api/auth'
 
 export default {
   components: {
@@ -68,7 +69,7 @@ export default {
   validations: {
     phone: {
       required,
-      minLength: minLength(16)
+      minLength: minLength(18)
     },
     iagreePD: {
       sameAs (check) {
@@ -89,27 +90,26 @@ export default {
           isError: false,
           message: ''
         }
-        setTimeout(() => {
-          this.loading = false
-          this.setUserData({ phone: this.phone })
-          this.setStep(STEP_SMS)
-        }, 600)
-        // try {
-        //   const data = await authApi.sendToken({ phone: this.phone })
-        //   setTimeout(() => {
-        //     console.log(data)
-        //     this.loading = false
-        //     eventBus.$emit('phone', this.phone)
-        //     eventBus.$emit('step', STEP_SMS)
-        //   }, 600)
-        // } catch (error) {
-        //   console.log(error)
+        // setTimeout(() => {
         //   this.loading = false
-        //   this.validErrorPhoneAPI = {
-        //     isError: true,
-        //     message: 'Ошибка сервера'
-        //   }
-        // }
+        //   this.setUserData({ phone: this.phone })
+        //   this.setStep(STEP_SMS)
+        // }, 600)
+        try {
+          await authApi.sendToken({ phone: this.phone })
+          setTimeout(() => {
+            this.loading = false
+            this.setUserData({ phone: this.phone })
+            this.setStep(STEP_SMS)
+          }, 600)
+        } catch (error) {
+          console.log(error)
+          this.loading = false
+          this.validErrorPhoneAPI = {
+            isError: true,
+            message: 'Ошибка сервера'
+          }
+        }
       }
     }
   }

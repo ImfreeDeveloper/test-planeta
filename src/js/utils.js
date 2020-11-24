@@ -16,6 +16,16 @@ export function parseQrString (str) {
   }
 }
 
+export function parseDateForSend (strDate) {
+  const params = strDate.split('.')
+
+  const day = params[0]
+  const month = params[1]
+  const year = params[2]
+
+  return `${year}-${month}-${day}`
+}
+
 function getDate (dateTimeFormat) {
   let dateAsString = dateTimeFormat.split('')
   let year = dateAsString.splice(0, 4).join('')

@@ -128,14 +128,14 @@ export default {
       required,
       minLength: minLength(2),
       ru (val) {
-        return val.length < 2 || /[а-яё]+/i.test(val)
+        return val.length < 2 || /^[А-Яа-яЁё\s]+$/i.test(val)
       }
     },
     name: {
       required,
       minLength: minLength(2),
       ru (val) {
-        return val.length < 2 || /[а-яё]+/i.test(val)
+        return val.length < 2 || /^[А-Яа-яЁё\s]+$/i.test(val)
       }
     }
   },
