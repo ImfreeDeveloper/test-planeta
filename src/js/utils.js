@@ -26,6 +26,13 @@ export function parseDateForSend (strDate) {
   return `${year}-${month}-${day}`
 }
 
+export function getDatesPromo (start, end) {
+  return {
+    start: parseDateForValid(start),
+    end: parseDateForValid(end)
+  }
+}
+
 export function phoneForSend (phone) {
   return ``
 }
@@ -40,4 +47,15 @@ function getDate (dateTimeFormat) {
   // let seconds = dateAsString.splice(1, 2).join('')
   let date = day + '.' + month + '.' + year
   return date
+}
+
+function parseDateForValid (strDate) {
+  const date = strDate.split(' ')
+  const parseDate = date[0].split('-')
+
+  const day = parseDate[2]
+  const month = parseDate[1]
+  const year = parseDate[0]
+
+  return new Date(year, month - 1, day)
 }

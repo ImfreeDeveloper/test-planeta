@@ -27,7 +27,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['stores', 'user']),
+    ...mapGetters(['stores', 'user', 'datesPromo', 'promoMinAmount']),
     storesItems () {
       return Object.keys(this.stores).map((store, idx) => {
         return {

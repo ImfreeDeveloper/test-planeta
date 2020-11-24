@@ -95,20 +95,20 @@ export default {
           required,
           validSummaPromo (summa) {
             const summaNoSpace = summa.replace(/\D/g, '')
-            return summaNoSpace >= 3000
+            return summaNoSpace >= +this.promoMinAmount
           }
         },
         datePromo: {
           required,
           validDatePromo (dt) {
             // Задаем условия акции с 1.10.2020 по текущую дату
-            const startDatePromo = new Date(2020, 9, 1)
-            const currentDatePromo = new Date()
+            const startDatePromo = this.datesPromo.start
+            const endDatePromo = this.datesPromo.end
             // Проверим введеную дату
             const arrD = dt.split('.')
             arrD[1] -= 1
             const d = new Date(arrD[2], arrD[1], arrD[0])
-            return d >= startDatePromo && d <= currentDatePromo
+            return d >= startDatePromo && d <= endDatePromo
           }
         }
       }
@@ -124,20 +124,20 @@ export default {
           required,
           validSummaPromo (summa) {
             const summaNoSpace = summa.replace(/\D/g, '')
-            return summaNoSpace >= 3000
+            return summaNoSpace >= +this.promoMinAmount
           }
         },
         datePromo: {
           required,
           validDatePromo (dt) {
             // Задаем условия акции с 1.10.2020 по текущую дату
-            const startDatePromo = new Date(2020, 9, 1)
-            const currentDatePromo = new Date()
+            const startDatePromo = this.datesPromo.start
+            const endDatePromo = this.datesPromo.end
             // Проверим введеную дату
             const arrD = dt.split('.')
             arrD[1] -= 1
             const d = new Date(arrD[2], arrD[1], arrD[0])
-            return d >= startDatePromo && d <= currentDatePromo
+            return d >= startDatePromo && d <= endDatePromo
           }
         }
       }
