@@ -4,9 +4,13 @@
     <button
       class="btn btn-primary"
       :disabled="!isErrorScan"
-      v-if="!showBtnAttachScan && !showInfoReceipt"
+      v-if="!showInfoReceipt && !showBtnAttachScan"
       @click="showBtnAttachScan = true;"
     >Ввести данные из чека</button>
+    <scan-attach-file
+      v-model="fileScanQr"
+      v-if="showBtnAttachScan"
+    />
     <div class="registartion__info-receipt" v-if="showInfoReceipt">
       <FieldSearch
         label="Магазин покупки*"
@@ -42,6 +46,7 @@
         </template>
       </Field>
       <attach-file
+        v-if="!showBtnAttachScan"
         validErrorText="Поле «Фото чека» не может быть пустым"
         :validError="$v.file"
         v-model="file"
@@ -55,10 +60,6 @@
         Зарегистрировать купон
       </button>
     </div>
-    <scan-attach-file
-      v-model="fileScanQr"
-      v-if="showBtnAttachScan"
-    />
   </div>
 </template>
 
@@ -84,31 +85,61 @@ export default {
     }
   },
   mixins: [RegistrationCamera],
-  validations: {
-    file: {
-      required
-    },
-    store: {
-      required
-    },
-    summaPromo: {
-      required,
-      validSummaPromo (summa) {
-        const summaNoSpace = summa.replace(/\D/g, '')
-        return summaNoSpace >= 3000
+  validations () {
+    if (this.showBtnAttachScan) {
+      return {
+        store: {
+          required
+        },
+        summaPromo: {
+          required,
+          validSummaPromo (summa) {
+            const summaNoSpace = summa.replace(/\D/g, '')
+            return summaNoSpace >= 3000
+          }
+        },
+        datePromo: {
+          required,
+          validDatePromo (dt) {
+            // Задаем условия акции с 1.10.2020 по текущую дату
+            const startDatePromo = new Date(2020, 9, 1)
+            const currentDatePromo = new Date()
+            // Проверим введеную дату
+            const arrD = dt.split('.')
+            arrD[1] -= 1
+            const d = new Date(arrD[2], arrD[1], arrD[0])
+            return d >= startDatePromo && d <= currentDatePromo
+          }
+        }
       }
-    },
-    datePromo: {
-      required,
-      validDatePromo (dt) {
-        // Задаем условия акции с 1.10.2020 по текущую дату
-        const startDatePromo = new Date(2020, 9, 1)
-        const currentDatePromo = new Date()
-        // Проверим введеную дату
-        const arrD = dt.split('.')
-        arrD[1] -= 1
-        const d = new Date(arrD[2], arrD[1], arrD[0])
-        return d >= startDatePromo && d <= currentDatePromo
+    } else {
+      return {
+        file: {
+          required
+        },
+        store: {
+          required
+        },
+        summaPromo: {
+          required,
+          validSummaPromo (summa) {
+            const summaNoSpace = summa.replace(/\D/g, '')
+            return summaNoSpace >= 3000
+          }
+        },
+        datePromo: {
+          required,
+          validDatePromo (dt) {
+            // Задаем условия акции с 1.10.2020 по текущую дату
+            const startDatePromo = new Date(2020, 9, 1)
+            const currentDatePromo = new Date()
+            // Проверим введеную дату
+            const arrD = dt.split('.')
+            arrD[1] -= 1
+            const d = new Date(arrD[2], arrD[1], arrD[0])
+            return d >= startDatePromo && d <= currentDatePromo
+          }
+        }
       }
     }
   },
@@ -126,12 +157,15 @@ export default {
         this.showInfoReceipt = true
         this.fetchStore(params)
         this.$v.$touch()
+        this.paramsScan = params
       } else {
         this.store = ''
         this.datePromo = ''
         this.summaPromo = ''
+        this.fileScanQr = ''
         this.isDisabledField = false
         this.showInfoReceipt = false
+        this.showBtnAttachScan = false
       }
       this.isErrorScan = params.isError
     }
@@ -141,7 +175,8 @@ export default {
       this.validateField('file')
     },
     fileScanQr (params) {
-      if (params) {
+      if (!params) return
+      if (params.date) {
         this.getDataScan(params)
       } else {
         this.store = ''
@@ -150,7 +185,6 @@ export default {
         this.isDisabledField = false
         this.showInfoReceipt = true
       }
-      this.showBtnAttachScan = false
     }
   }
 

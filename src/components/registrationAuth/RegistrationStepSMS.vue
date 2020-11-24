@@ -98,8 +98,8 @@ export default {
                   surname: data.results.first_name,
                   name: data.results.last_name,
                   email: data.results.email,
-                  district: data.results.district,
-                  city: data.results.city
+                  district: { id: '', name: data.results.district },
+                  city: { id: '', name: data.results.city }
                 })
                 this.setStep(STEP_QR)
               } else {

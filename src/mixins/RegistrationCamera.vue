@@ -22,7 +22,8 @@ export default {
       isDisabledField: false,
       isDisabledStore: false,
       isShowField: false,
-      loadingSend: false
+      loadingSend: false,
+      paramsScan: {}
     }
   },
   computed: {
@@ -78,7 +79,6 @@ export default {
       this.$v.$touch()
       if (!this.$v.$invalid) {
         this.loadingSend = true
-        console.log(this.file)
         const fileBase64 = await this.toBase64(this.fileScanQr.file || this.file)
         const obj = {
           phone: this.user.phone,
@@ -91,9 +91,9 @@ export default {
           store: this.store.name,
           use_loyalty_card: false,
           invoice_photo: fileBase64,
-          invoice_fn: this.fileScanQr.fn,
-          invoice_fp: this.fileScanQr.fp,
-          invoice_i: this.fileScanQr.i,
+          invoice_fn: this.fileScanQr.fn || this.paramsScan.fn,
+          invoice_fp: this.fileScanQr.fp || this.paramsScan.fp,
+          invoice_i: this.fileScanQr.i || this.paramsScan.i,
           no_qr: false,
           amount: this.summaPromo.replace(/\s/g, ''),
           purchase_date: parseDateForSend(this.datePromo),
@@ -108,7 +108,7 @@ export default {
             if (data.success) {
               this.setStep(STEP_LAST)
             } else {
-              alert('Ошибка регистрации')
+              alert(data.error)
             }
             this.loadingSend = false
           }, 600)

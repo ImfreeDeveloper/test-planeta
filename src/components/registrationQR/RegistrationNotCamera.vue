@@ -1,6 +1,9 @@
 <template>
   <div>
     <Loader v-if="loading" />
+    <scan-attach-file
+      v-model="fileScanQr"
+    />
     <FieldSearch
       label="Магазин покупки*"
       :items="storesItems"
@@ -37,15 +40,10 @@
         </div>
       </template>
     </Field>
-    <scan-attach-file
-      validErrorText="QR-код не распознается"
-      :validError="$v.fileScanQr"
-      v-model="fileScanQr"
-    />
     <button
       class="btn btn-primary"
       @click="submitHandler"
-      v-if="isShowField && !$v.$invalid"
+      v-if="isShowField"
       :disabled="loadingSend"
     >
       <span class="btn-loader" v-if="loadingSend"></span>
@@ -73,9 +71,6 @@ export default {
   },
   mixins: [RegistrationCamera],
   validations: {
-    fileScanQr: {
-      required
-    },
     store: {
       required
     },
@@ -102,32 +97,29 @@ export default {
   },
   methods: {
     getDataScan (params) {
-      if (params.date) {
-        const summaPromo = params.summa
-          .replace(/\..*/, '')
-          .replace(/\D/g, '')
-          .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
-        this.datePromo = params.date
-        this.summaPromo = summaPromo
-        this.isDisabledField = true
-        this.isShowField = true
-        this.fetchStore(params)
-        this.$v.$touch()
-      } else {
-        this.datePromo = ''
-        this.summaPromo = ''
-        this.isDisabledField = false
-        this.isShowField = false
-      }
+      const summaPromo = params.summa
+        .replace(/\..*/, '')
+        .replace(/\D/g, '')
+        .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
+      this.datePromo = params.date
+      this.summaPromo = summaPromo
+      this.isDisabledField = true
+      this.isShowField = true
+      this.fetchStore(params)
+      this.$v.$touch()
     }
   },
   watch: {
     fileScanQr (params) {
-      this.validateField('fileScanQr')
-      if (params) {
+      console.log(params)
+      if (params.date) {
         this.getDataScan(params)
       } else {
-        this.isShowField = false
+        this.datePromo = ''
+        this.summaPromo = ''
+        this.store = ''
+        this.isDisabledField = false
+        this.isShowField = true
       }
     }
   }

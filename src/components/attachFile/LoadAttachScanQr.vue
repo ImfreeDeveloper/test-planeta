@@ -26,7 +26,7 @@
         <div class="container">
           <div class="wrap-btn-attach">
             <!-- <qrcode-capture :multiple="false" @decode="onDecode" /> -->
-            <qrcode-capture :multiple="false" @detect="onDetect" @changeFile="getFile" />
+            <qrcode-capture @detect="onDetect" @changeFile="getFile" />
             <button class="btn btn-primary">
               Загрузить чек
             </button>
@@ -54,14 +54,14 @@ export default {
       this.file = file
     },
     async onDetect (promise) {
-      let params = null
+      let params = {}
       try {
         const { content } = await promise
         if (content !== null) {
           params = parseQrString(content)
-          params.file = this.file
         }
       } catch (error) {}
+      params.file = this.file
       this.$emit('fileScan', params)
       this.$emit('close')
     }

@@ -26,6 +26,10 @@ export function parseDateForSend (strDate) {
   return `${year}-${month}-${day}`
 }
 
+export function phoneForSend (phone) {
+  return ``
+}
+
 function getDate (dateTimeFormat) {
   let dateAsString = dateTimeFormat.split('')
   let year = dateAsString.splice(0, 4).join('')
