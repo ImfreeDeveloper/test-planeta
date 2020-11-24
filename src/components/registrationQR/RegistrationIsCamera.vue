@@ -146,12 +146,14 @@ export default {
         this.summaPromo = summaPromo
         this.isDisabledField = true
         this.isShowField = true
+        this.showInfoReceipt = true
         this.fetchStore(params)
         this.$v.$touch()
       } else {
         this.datePromo = ''
         this.summaPromo = ''
         this.isDisabledField = false
+        this.showInfoReceipt = false
         this.isShowField = false
       }
       this.isErrorScan = params.isError

@@ -66,7 +66,6 @@ export default {
       datePromo: '',
       summaPromo: '',
       store: '',
-      isErrorScan: false,
       fileScanQr: '',
       isDisabledField: false,
       isDisabledStore: false,
@@ -146,7 +145,6 @@ export default {
         this.isDisabledField = false
         this.isShowField = false
       }
-      this.isErrorScan = params.isError
     },
     async fetchStore (params) {
       this.loading = true
