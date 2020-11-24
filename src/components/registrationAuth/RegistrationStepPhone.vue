@@ -1,9 +1,9 @@
 <template>
   <div class="registartion" :class="{ disabled: loading }">
-    <h1 class="title">Регистрация / Авторизация</h1>
+    <h1 class="title">Регистрация в акции «Ужасно чёрная пятница»</h1>
     <div class="text">
       <p>
-        Для начала регистрации или авторизации укажите, пожалуйста, ваш номер
+        Для начала регистрации укажите, пожалуйста, ваш номер
         телефона.
       </p>
     </div>
@@ -15,13 +15,14 @@
       @blur="validateField('phone')"
     />
     <FieldCheck
+      class="mb1"
       :validError="$v.iagreePD.$error"
       validErrorText="Необходимо согласиться с правилами обработки персональных данных."
       @change="validateField('iagreePD')"
       v-model="iagreePD"
     >
       <template slot="label-descr">
-        Согласен с <a href="#" target="_blank">правилами</a> обработки
+        Согласен с <a :href="linkPDF" target="_blank">правилами</a> обработки
         персональных данных
       </template>
     </FieldCheck>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 import FieldPhone from '../fieldsInput/FieldPhone.vue'
 import FieldCheck from '../fieldsInput/FieldCheck.vue'
@@ -65,6 +66,9 @@ export default {
         message: ''
       }
     }
+  },
+  computed: {
+    ...mapGetters(['linkPDF'])
   },
   validations: {
     phone: {

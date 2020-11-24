@@ -23,7 +23,7 @@
     >
       {{ err }}
     </p>
-    <p class="wrp-field__success" v-if="value.length && !validError.$error && successText">
+    <p class="wrp-field__success" v-if="successText">
       {{ successText }}
     </p>
   </div>

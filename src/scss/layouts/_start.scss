@@ -99,7 +99,7 @@ i.rub {
 
 .text {
   margin-top: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   p {
     display: block;
     font-size: 1.2rem;
@@ -141,11 +141,15 @@ i.rub {
 .mt3 {
   margin-top: 3rem;
 }
+.mb1 {
+  margin-bottom: 1rem!important;
+}
 .mb2 {
   margin-bottom: 2rem;
 }
 
 .txt-no-wrap {
+  display: block;
   white-space: nowrap;
 }
 

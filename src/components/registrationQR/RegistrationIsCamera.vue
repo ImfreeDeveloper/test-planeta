@@ -51,13 +51,16 @@
         :validError="$v.file"
         v-model="file"
       />
+      <div class="text">
+        <p>Поля формы, отмеченные * являются обязательными для заполнения.</p>
+      </div>
       <button
         class="btn btn-primary"
         @click="submitHandler"
         :disabled="loadingSend"
       >
         <span class="btn-loader" v-if="loadingSend"></span>
-        Зарегистрировать купон
+        Зарегистрировать чек
       </button>
     </div>
   </div>

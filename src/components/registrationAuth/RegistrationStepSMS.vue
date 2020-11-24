@@ -1,10 +1,10 @@
 <template>
   <div class="registartion" :class="{ disabled: loading }">
-    <h1 class="title">Регистрация / Авторизация</h1>
+    <h1 class="title">Регистрация в акции «Ужасно чёрная пятница»</h1>
     <h2 class="subtitle">Подтверждение номера телефона</h2>
     <div class="text">
       <p>Мы отправлили SMS с проверочным кодом на номер <strong class="txt-no-wrap">{{ user.phone }}</strong></p>
-      <p>Введите его в форме ниже для продолжения регистрации / авторизации.</p>
+      <p>Введите его в форме ниже для продолжения регистрации.</p>
     </div>
     <FieldCode
       label="Код из SMS*"
