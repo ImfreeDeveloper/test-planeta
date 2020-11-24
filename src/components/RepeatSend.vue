@@ -7,21 +7,16 @@
 
 <script>
 import { mapActions } from 'vuex'
+import Timer from '../mixins/Timer.vue'
 const timeInSeconds = 59
 
 export default {
   data () {
     return {
-      currentTime: timeInSeconds,
-      timer: null
+      currentTime: timeInSeconds
     }
   },
-  mounted () {
-    this.startTimer()
-  },
-  destroyed () {
-    this.stopTimer()
-  },
+  mixins: [Timer],
   computed: {
     formatCurrentTime () {
       const seconds = (this.currentTime < 10 ? '0' : '') + this.currentTime
@@ -30,27 +25,14 @@ export default {
   },
   methods: {
     ...mapActions(['sendToken']),
-    startTimer () {
-      this.timer = setInterval(() => {
-        this.currentTime--
-      }, 1000)
-    },
-    stopTimer () {
-      clearTimeout(this.timer)
-    },
     async sendCodeRepeat () {
       this.currentTime = timeInSeconds
       this.startTimer()
       this.sendToken()
     }
   },
-  watch: {
-    currentTime (time) {
-      if (time === 0) {
-        this.stopTimer()
-      }
-    }
+  mounted () {
+    this.startTimer()
   }
-
 }
 </script>

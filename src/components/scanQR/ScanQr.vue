@@ -44,6 +44,9 @@
 <script>
 import { QrcodeStream } from 'vue-qrcode-reader'
 import { parseQrString } from '../../js/utils'
+import Timer from '../../mixins/Timer.vue'
+const timeInSeconds = 31
+
 export default {
   components: {
     QrcodeStream
@@ -54,14 +57,16 @@ export default {
       loading: false,
       destroyed: false,
       isStart: true,
-      isError: false
+      isError: false,
+      currentTime: timeInSeconds
     }
   },
-
+  mixins: [Timer],
   methods: {
     startScan () {
       this.isStart = false
       this.camera = 'auto'
+      this.startTimer()
     },
     onDecode (content) {
       try {
@@ -74,7 +79,7 @@ export default {
         this.$emit('handlerScan', { isError: true })
       } finally {
         this.camera = 'off'
-        console.log(content)
+        this.stopTimer()
       }
     },
     async onInit (promise) {
@@ -90,13 +95,26 @@ export default {
     },
     async reload () {
       this.destroyed = true
+      this.stopTimer()
 
       await this.$nextTick()
 
+      this.currentTime = timeInSeconds
+      this.startTimer()
       this.destroyed = false
       this.isError = false
       this.$emit('handlerScan', { isError: false })
       this.camera = 'auto'
+    }
+  },
+  watch: {
+    currentTime (time) {
+      if (time <= 0) {
+        this.stopTimer()
+        this.isError = true
+        this.$emit('handlerScan', { isError: true })
+        this.camera = 'off'
+      }
     }
   }
 }
