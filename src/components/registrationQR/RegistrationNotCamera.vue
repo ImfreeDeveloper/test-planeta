@@ -43,89 +43,30 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import { required } from 'vuelidate/lib/validators'
-import FieldSearch from '../fieldsInput/FieldSearch.vue'
-import FieldDate from '../fieldsInput/FieldDate.vue'
-import Field from '../fieldsInput/Field.vue'
 import fieldScanAttachFile from '../fieldsInput/FieldScanAttachFile.vue'
 import { STEP_LAST } from '../../js/constants'
 import Loader from '../../components/Loader.vue'
-import * as infoApi from '../../js/api/info'
+import RegistrationCamera from '../../mixins/RegistrationCamera.vue'
 
 export default {
   components: {
-    FieldSearch,
-    FieldDate,
-    Field,
     fieldScanAttachFile,
     Loader
   },
   data () {
     return {
-      datePromo: '',
-      summaPromo: '',
-      store: '',
       fileScanQr: '',
-      isDisabledField: false,
-      isDisabledStore: false,
-      isShowField: false,
       loading: false
     }
   },
-  computed: {
-    ...mapGetters(['stores']),
-    storesItems () {
-      return Object.keys(this.stores).map((store, idx) => {
-        return {
-          id: idx,
-          name: store
-        }
-      })
-    }
-  },
-  validations: {
-    store: {
-      required
-    },
-    summaPromo: {
-      required,
-      validSummaPromo (summa) {
-        const summaNoSpace = summa.replace(/\D/g, '')
-        return summaNoSpace >= 3000
-      }
-    },
-    datePromo: {
-      required,
-      validDatePromo (dt) {
-        // Задаем условия акции с 1.10.2020 по текущую дату
-        const startDatePromo = new Date(2020, 9, 1)
-        const currentDatePromo = new Date()
-        // Проверим введеную дату
-        const arrD = dt.split('.')
-        arrD[1] -= 1
-        const d = new Date(arrD[2], arrD[1], arrD[0])
-        return d >= startDatePromo && d <= currentDatePromo
-      }
-    }
-  },
+  mixins: [RegistrationCamera],
   methods: {
-    ...mapActions(['setStep']),
-    validateField (vmfield) {
-      this.$v[vmfield].$touch()
-    },
     submitHandler () {
       this.$v.$touch()
       console.log(`Файл: ${this.file}`)
       if (!this.$v.$invalid) {
         this.setStep(STEP_LAST)
       }
-    },
-    setFormat (e) {
-      let value = e.target.value
-      this.summaPromo = value
-        .replace(/\D/g, '')
-        .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
     },
     getDataScan (params) {
       if (params.date) {
@@ -144,33 +85,6 @@ export default {
         this.summaPromo = ''
         this.isDisabledField = false
         this.isShowField = false
-      }
-    },
-    async fetchStore (params) {
-      this.loading = true
-      try {
-        const data = await infoApi.getStore({ fnn: params.fn })
-        setTimeout(() => {
-          if (data.success) {
-            const currentStore = this.storesItems.filter(store => store.name === data.results.store)
-            if (currentStore.length) {
-              this.store = currentStore[0]
-              this.isDisabledStore = true
-            } else {
-              this.isDisabledStore = false
-              this.store = ''
-            }
-          } else {
-            this.isDisabledStore = false
-            this.store = ''
-          }
-          this.loading = false
-        }, 600)
-      } catch (error) {
-        this.loading = false
-        this.isDisabledStore = false
-        this.store = ''
-        console.log(error)
       }
     }
   },

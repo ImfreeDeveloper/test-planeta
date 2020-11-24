@@ -6,17 +6,23 @@
       <p>Ваш купон успешно зарегистрирован.</p>
       <p>Если Вы хотите зарегистрировать ещё один купон, перейдите по ссылке ниже.</p>
     </div>
-    <button class="btn btn-primary mt3 mb2">Ещё один ЧЕК</button>
+    <button class="btn btn-primary mt3 mb2" @click="stepQR">Ещё один ЧЕК</button>
   </div>
 </template>
 
 <script>
-// import { eventBus } from '../../js/main'
-// import { STEP_DATA, STEP_PHONE } from '../../js/constants'
+import { mapActions } from 'vuex'
+import { STEP_QR } from '../js/constants'
 
 export default {
   data () {
     return {}
+  },
+  methods: {
+    ...mapActions(['setStep']),
+    stepQR () {
+      this.setStep(STEP_QR)
+    }
   }
 }
 </script>
