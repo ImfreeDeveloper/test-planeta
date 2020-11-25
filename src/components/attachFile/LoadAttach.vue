@@ -69,9 +69,10 @@ export default {
 
 // Проверка расширения файлов при добавлении
 function validEXT (file) {
-  let ext = file.name.split('.')[1]
+  const parse = file.name.split('.')
+  let ext = parse[parse.length - 1]
   if (!ext) return false
-  let mas = ['jpg', 'png']
+  let mas = ['jpg', 'jpeg', 'png']
   for (let i = 0; i < mas.length; i++) {
     if (mas[i] === ext) return true
   }
