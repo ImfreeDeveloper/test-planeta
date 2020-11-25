@@ -2,7 +2,6 @@ import * as authApi from '../api/auth'
 import { STEP_PHONE, STEP_SMS, STEP_IS_OVER } from '../constants'
 import * as LS from '../localStorage'
 import Cookies from 'js-cookie'
-import { getDatesPromo } from '../utils'
 
 export default {
   state: {
@@ -85,10 +84,6 @@ export default {
     promo: state => state.loading,
     stores: state => JSON.parse(state.promo.stores),
     user: state => state.user,
-    cities: state => JSON.parse(state.promo.cities),
-    datesPromo: state => getDatesPromo(state.promo.promo_start, state.promo.promo_end),
-    promoMinAmount: state => state.promo.min_amount,
-    linkPDF: state => state.promo.pd_file,
-    linkRules: state => state.promo.rules_file
+    cities: state => JSON.parse(state.promo.cities)
   }
 }

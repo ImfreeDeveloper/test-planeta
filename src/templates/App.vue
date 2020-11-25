@@ -1,25 +1,17 @@
 <template>
-  <div class="wrapper">
-    <Header />
-    <main class="content">
-      <div class="wrap-content">
-        <Loader v-if="loading" />
-        <registration-step-phone v-if="step === steps.STEP_PHONE" />
-        <registration-step-sms v-if="step === steps.STEP_SMS" />
-        <registration-step-data v-if="step === steps.STEP_DATA" />
-        <registration-step-qr v-if="step === steps.STEP_QR" />
-        <registration-step-last v-if="step === steps.STEP_LAST" />
-        <registration-is-over v-if="step === steps.STEP_IS_OVER" />
-      </div>
-    </main>
-    <Footer />
+  <div class="wrap-content">
+    <Loader v-if="loading" />
+    <registration-step-phone v-if="step === steps.STEP_PHONE" />
+    <registration-step-sms v-if="step === steps.STEP_SMS" />
+    <registration-step-data v-if="step === steps.STEP_DATA" />
+    <registration-step-qr v-if="step === steps.STEP_QR" />
+    <registration-step-last v-if="step === steps.STEP_LAST" />
+    <registration-is-over v-if="step === steps.STEP_IS_OVER" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
 import Loader from '../components/Loader.vue'
 import RegistrationStepPhone from '../components/registrationAuth/RegistrationStepPhone.vue'
 import RegistrationStepSms from '../components/registrationAuth/RegistrationStepSMS.vue'
@@ -32,8 +24,6 @@ import { STEP_PHONE, STEP_SMS, STEP_DATA, STEP_QR, STEP_LAST, STEP_IS_OVER } fro
 
 export default {
   components: {
-    Header,
-    Footer,
     Loader,
     RegistrationStepPhone,
     RegistrationStepSms,

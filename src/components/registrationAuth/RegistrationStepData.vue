@@ -1,7 +1,7 @@
 <template>
   <div class="registartion">
-    <h1 class="title">Мои данные</h1>
-    <h2 class="subtitle">Дополнительная информация</h2>
+    <p class="subtitle">Мои данные</p>
+    <p class="subtitle">Дополнительная информация</p>
     <div class="text">
       <p>Для возможности участия в акциях укажите, пожалуйста, дополнительную информацию о себе.</p>
     </div>

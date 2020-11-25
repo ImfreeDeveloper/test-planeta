@@ -1,6 +1,5 @@
 <template>
   <div class="registartion" :class="{ disabled: loading }">
-    <h1 class="title">Регистрация в акции «Ужасно чёрная пятница»</h1>
     <h2 class="subtitle">Подтверждение номера телефона</h2>
     <div class="text">
       <p>Мы отправлили SMS с проверочным кодом на номер <strong class="txt-no-wrap">{{ user.phone }}</strong></p>
@@ -75,14 +74,6 @@ export default {
           isError: false,
           message: ''
         }
-        // setTimeout(() => {
-        //   this.loading = false
-        //   this.setUserData({ smscode: this.code })
-        //   // Запись в куки
-        //   Cookies.set('c_auth', `${this.user.phone}_${this.code}`, { expires: 3 })
-        //   this.setStep(STEP_DATA)
-        // }, 600)
-
         try {
           const data = await authApi.checkToken({
             phone: this.user.phone,
@@ -90,7 +81,6 @@ export default {
           })
           if (data.success) {
             setTimeout(() => {
-              console.log(data)
               this.setUserData({ smscode: this.code })
               Cookies.set('c_auth', `${this.user.phone}_${this.code}`, { expires: 3 })
               if (data.results) {

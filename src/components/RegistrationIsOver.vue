@@ -1,6 +1,6 @@
 <template>
   <div class="registartion">
-    <h1 class="title">Регистрация в акции окончена</h1>
+    <h2 class="subtitle">Регистрация в акции окончена</h2>
   </div>
 </template>
 

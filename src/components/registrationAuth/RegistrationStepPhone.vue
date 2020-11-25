@@ -1,6 +1,5 @@
 <template>
   <div class="registartion" :class="{ disabled: loading }">
-    <h1 class="title">Регистрация в акции «Ужасно чёрная пятница»</h1>
     <div class="text">
       <p>
         Для начала регистрации укажите, пожалуйста, ваш номер
