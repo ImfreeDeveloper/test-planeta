@@ -86,7 +86,7 @@ export default {
     stores: state => JSON.parse(state.promo.stores),
     user: state => state.user,
     cities: state => JSON.parse(state.promo.cities),
-    datesPromo: state => getDatesPromo(state.promo.promo_start, state.promo.promo_end),
+    datesPromo: state => getDatesPromo(state.promo.start_date, state.promo.end_date),
     promoMinAmount: state => state.promo.min_amount,
     linkPDF: state => state.promo.pd_file,
     linkRules: state => state.promo.rules_file
