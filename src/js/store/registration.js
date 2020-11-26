@@ -1,5 +1,5 @@
 import * as authApi from '../api/auth'
-import { STEP_PHONE, STEP_SMS, STEP_IS_OVER } from '../constants'
+import { STEP_PHONE, STEP_SMS, STEP_IS_OVER, STEP_LAST, STEP_QR } from '../constants'
 import * as LS from '../localStorage'
 import Cookies from 'js-cookie'
 import { getDatesPromo } from '../utils'
@@ -33,7 +33,11 @@ export default {
       } else {
         state.step = step
       }
-      LS.setStep(state.step)
+      if (step === STEP_LAST) {
+        LS.setStep(STEP_QR)
+      } else {
+        LS.setStep(state.step)
+      }
     },
     setUserData (state, data) {
       state.user = {

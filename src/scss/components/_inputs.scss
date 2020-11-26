@@ -18,7 +18,7 @@ $color-grey: #999999;
 }
 ::placeholder{color:$color-grey}
 
-input[type="text"], .wrp-input__field {
+input[type="text"], input[type="tel"], .wrp-input__field {
   display: block;
   box-sizing: border-box;
   outline: none;

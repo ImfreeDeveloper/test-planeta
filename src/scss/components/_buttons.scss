@@ -45,6 +45,7 @@ $color-disabled: #e7e7e7;
     pointer-events: none;
     border: .2rem solid $color-disabled;
     color: $color-disabled;
+    transition: none;
   }
   &__icon {
     margin-right: 1.5rem;

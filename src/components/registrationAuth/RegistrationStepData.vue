@@ -48,9 +48,6 @@
       <p>Поля формы, отмеченные * являются обязательными для заполнения.</p>
     </div>
     <button class="btn btn-primary mt3 mb2" @click="submitHandler">Далее</button>
-    <div class="text">
-      <p>Нажимая кнопку «Зарегистрировать чек» я соглашаюсь с <a :href="linkRules" target="_blank" class="link">правилами участия в акции</a></p>
-    </div>
   </div>
 </template>
 
@@ -99,7 +96,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['cities', 'linkRules']),
+    ...mapGetters(['cities']),
     сitiesItems () {
       return Object.keys(this.cities).map((city, idx) => {
         return {

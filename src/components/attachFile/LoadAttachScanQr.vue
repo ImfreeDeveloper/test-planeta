@@ -24,10 +24,11 @@
       </div>
       <div class="modal-popup-bottom">
         <div class="container">
-          <div class="wrap-btn-attach">
+          <div class="wrap-btn-attach" :disabled="loading">
             <!-- <qrcode-capture :multiple="false" @decode="onDecode" /> -->
             <qrcode-capture @detect="onDetect" @changeFile="getFile" />
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" :disabled="loading">
+              <span class="btn-loader" v-if="loading"></span>
               Загрузить чек
             </button>
           </div>
@@ -46,6 +47,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       file: null
     }
   },
@@ -55,12 +57,16 @@ export default {
     },
     async onDetect (promise) {
       let params = {}
+      this.loading = true
       try {
         const { content } = await promise
         if (content !== null) {
           params = parseQrString(content)
+          this.loading = false
         }
-      } catch (error) {}
+      } catch (error) {
+        this.loading = false
+      }
       params.file = this.file
       this.$emit('fileScan', params)
       this.$emit('close')

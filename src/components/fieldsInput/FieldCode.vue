@@ -6,7 +6,8 @@
     <label>{{ label }}</label>
     <div class="wrp-input">
       <input
-        type="text"
+        type="tel"
+        autocomplete="off"
         placeholder=""
         :value="value"
         v-on="inputListeners"

@@ -52,7 +52,9 @@
       <span class="btn-loader" v-if="loadingSend"></span>
       Зарегистрировать чек
     </button>
-
+    <div class="text mt15" v-if="isShowField">
+      <p>Нажимая кнопку «Зарегистрировать чек» я соглашаюсь с <a :href="linkRules" target="_blank" class="link">правилами участия в акции</a></p>
+    </div>
   </div>
 </template>
 

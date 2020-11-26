@@ -28,6 +28,11 @@
         cursor: default;
       }
     }
+    &[disabled] {
+      pointer-events: none;
+      color: $color-disabled;
+      transition: none;
+    }
   }
   &__title {
     display: block;
