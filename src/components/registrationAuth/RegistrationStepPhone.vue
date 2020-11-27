@@ -62,7 +62,8 @@ export default {
       loading: false,
       validErrorPhoneAPI: {
         isError: false,
-        message: ''
+        message: '',
+        phoneError: ''
       }
     }
   },
@@ -80,6 +81,14 @@ export default {
       }
     }
   },
+  watch: {
+    phone (val) {
+      this.validErrorPhoneAPI.isError = false
+      if (val === this.validErrorPhoneAPI.phoneError) {
+        this.validErrorPhoneAPI.isError = true
+      }
+    }
+  },
   methods: {
     ...mapActions(['setStep', 'setUserData']),
     validateField (vmfield) {
@@ -93,18 +102,22 @@ export default {
           isError: false,
           message: ''
         }
-        // setTimeout(() => {
-        //   this.loading = false
-        //   this.setUserData({ phone: this.phone })
-        //   this.setStep(STEP_SMS)
-        // }, 600)
         try {
-          await authApi.sendToken({ phone: this.phone })
-          setTimeout(() => {
+          const data = await authApi.sendToken({ phone: this.phone })
+          if (data.success) {
+            setTimeout(() => {
+              this.loading = false
+              this.setUserData({ phone: this.phone })
+              this.setStep(STEP_SMS)
+            }, 600)
+          } else {
+            this.validErrorPhoneAPI = {
+              isError: true,
+              message: data.error,
+              phoneError: this.phone
+            }
             this.loading = false
-            this.setUserData({ phone: this.phone })
-            this.setStep(STEP_SMS)
-          }, 600)
+          }
         } catch (error) {
           console.log(error)
           this.loading = false

@@ -22,7 +22,7 @@
     <p class="wrp-field__error" v-if="validError.$error && !validError.minLength">
       Некорректный формат телефона
     </p>
-    <p class="wrp-field__error" v-if="validErrorAPI.isError">
+    <p class="wrp-field__error" v-if="!validError.$error && validErrorAPI.isError">
       {{ validErrorAPI.message }}
     </p>
   </div>

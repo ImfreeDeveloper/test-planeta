@@ -172,6 +172,7 @@ export default {
         this.isDisabledField = false
         this.showInfoReceipt = false
         this.showBtnAttachScan = false
+        this.paramsScan = {}
       }
       this.isErrorScan = params.isError
     }

@@ -6,13 +6,15 @@ export function parseQrString (str) {
   const fn = params[2].split('fn=')[1]
   const i = params[3].split('i=')[1]
   const fp = params[4].split('fp=')[1]
+  const qr = str
 
   return {
     date,
     summa,
     fn,
     i,
-    fp
+    fp,
+    qr
   }
 }
 

@@ -94,6 +94,7 @@ export default {
           invoice_fn: this.fileScanQr.fn || this.paramsScan.fn,
           invoice_fp: this.fileScanQr.fp || this.paramsScan.fp,
           invoice_i: this.fileScanQr.i || this.paramsScan.i,
+          invoice_qr: this.fileScanQr.qr || this.paramsScan.qr,
           no_qr: false,
           amount: this.summaPromo.replace(/\s/g, ''),
           purchase_date: parseDateForSend(this.datePromo),
