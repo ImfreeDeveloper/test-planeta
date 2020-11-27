@@ -29,6 +29,10 @@
         v-if="!destroyed && !isStart && !isError"
         @click="reload"
       >
+        <div class="scan-qr__code-scanned" v-if="scanned">
+          <span class="icon-scanned-check"></span>
+          <p>Чек успешно распознан</p>
+        </div>
         <qrcode-stream
           :camera="camera"
           @decode="onDecode"
@@ -38,6 +42,17 @@
         </qrcode-stream>
       </div>
     </div>
+    <div class="scan-qr__reload"
+      v-if="scanned"
+      @click="reload"
+    >
+      <p>Сканировать другой чек</p>
+    </div>
+    <div class="scan-qr__time"
+      v-if="!scanned && showTimer"
+    >
+      <p>Отсканируйте QR-код чека<br />или введите его данные через {{ formatCurrentTime }}</p>
+    </div>
   </div>
 </template>
 
@@ -45,7 +60,7 @@
 import { QrcodeStream } from 'vue-qrcode-reader'
 import { parseQrString } from '../../js/utils'
 import Timer from '../../mixins/Timer.vue'
-const timeInSeconds = 31
+const timeInSeconds = 30
 
 export default {
   components: {
@@ -54,14 +69,22 @@ export default {
   data () {
     return {
       camera: 'off',
+      scanned: false,
       loading: false,
       destroyed: false,
       isStart: true,
       isError: false,
+      showTimer: false,
       currentTime: timeInSeconds
     }
   },
   mixins: [Timer],
+  computed: {
+    formatCurrentTime () {
+      const seconds = (this.currentTime < 10 ? '0' : '') + this.currentTime
+      return `0:${seconds}`
+    }
+  },
   methods: {
     startScan () {
       this.isStart = false
@@ -72,7 +95,7 @@ export default {
       try {
         const params = parseQrString(content)
         params.isError = false
-
+        this.scanned = true
         this.$emit('handlerScan', params)
       } catch (error) {
         this.isError = true
@@ -80,6 +103,7 @@ export default {
       } finally {
         this.camera = 'off'
         this.stopTimer()
+        this.showTimer = false
       }
     },
     async onInit (promise) {
@@ -87,6 +111,7 @@ export default {
 
       try {
         await promise
+        this.showTimer = true
       } catch (error) {
         console.log(error)
       } finally {
@@ -100,6 +125,7 @@ export default {
       await this.$nextTick()
 
       this.currentTime = timeInSeconds
+      this.scanned = false
       this.startTimer()
       this.destroyed = false
       this.isError = false
@@ -111,6 +137,7 @@ export default {
     currentTime (time) {
       if (time <= 0) {
         this.stopTimer()
+        this.showTimer = false
         this.isError = true
         this.$emit('handlerScan', { isError: true })
         this.camera = 'off'

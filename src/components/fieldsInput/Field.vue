@@ -1,10 +1,12 @@
 <template>
   <div
     class="wrp-field"
-    :class="{'is-danger': validError.$error, 'wrp-field_disabled': isDisabled}"
+    :class="{'is-danger': validError.$error}"
   >
     <label>{{ label }}</label>
-    <div class="wrp-input">
+    <div class="wrp-input"
+      :class="{'wrp-field_disabled': isDisabled}"
+    >
       <input
         type="text"
         placeholder=""
@@ -26,6 +28,7 @@
     <p class="wrp-field__success" v-if="successText">
       {{ successText }}
     </p>
+    <a href="#" class="link" v-if="linkToScrollScan">Попробуйте зарегистрировать другой чек.</a>
   </div>
 </template>
 
@@ -39,7 +42,8 @@ export default {
     'validErrorText',
     'maxLength',
     'successText',
-    'isDisabled'
+    'isDisabled',
+    'linkToScrollScan'
   ],
   computed: {
     inputListeners: function () {

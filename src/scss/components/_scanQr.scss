@@ -11,6 +11,9 @@ $color-border-angel: #E04B24;
   margin: 3.5rem auto 5rem;
   box-sizing: border-box;
   position: relative;
+  &-wrap {
+    position: relative;
+  }
   &__angles {
     &-left, &-right {
       position: absolute;
@@ -95,7 +98,7 @@ $color-border-angel: #E04B24;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    position: relative;
     .loading-indicator {
       position: absolute;
       top: 0;
@@ -108,11 +111,95 @@ $color-border-angel: #E04B24;
       align-items: center;
       font-size: 1.2rem;
     }
+    &-scanned {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background-color: fade-out($color-text, .5);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      p {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: $color-white;
+        text-align: center;
+      }
+      .icon-scanned-check {
+        margin-bottom: 1.5rem;
+        position: relative;
+        height: 5.4rem;
+        width: 6.8rem;
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          height: 2.4rem;
+          width: 5.6rem;
+          border-left: 1.1rem solid $color-white;
+          border-bottom: 1.1rem solid$color-white;
+          transform: rotate(-45deg);
+          transition: opacity .2s ease-in-out;
+        }
+      }
+    }
   }
   &-hidden {
     position: absolute;
     width: 0;
     height: 0;
     opacity: 0;
+  }
+  &__reload {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3rem;
+    p {
+      display: inline-block;
+      position: relative;
+      padding-left: 2.2rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+      cursor: pointer;
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        background-image: url('/images/svg/icon-reload.svg');
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 1.6rem;
+        height: 1.4rem;
+      }
+    }
+  }
+  &__time {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4rem;
+    p {
+      display: inline-block;
+      position: relative;
+      padding-left: 2.2rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
   }
 }

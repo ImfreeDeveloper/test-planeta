@@ -25,6 +25,7 @@
         label="Дата покупки*"
         validErrorText="Дата покупки не соответствует условиям акции."
         :validError="$v.datePromo.$error"
+        :link-to-scroll-scan="linkToScrollScan === 'datePromo'"
         v-model="datePromo"
         @blur="validateField('datePromo')"
         :isDisabled="isDisabledField"
@@ -34,6 +35,7 @@
         :validErrorText="{summaPromo: 'Сумма покупки не соответствует условиям акции.'}"
         :validError="$v.summaPromo"
         :maxLength="9"
+        :link-to-scroll-scan="linkToScrollScan === 'summaPromo'"
         v-model="summaPromo"
         @keyup="setFormat"
         @blur="validateField('summaPromo')"
@@ -84,6 +86,7 @@ export default {
   },
   data () {
     return {
+      linkToScrollScan: '',
       isErrorScan: false,
       showInfoReceipt: false,
       file: '',
@@ -150,7 +153,18 @@ export default {
     }
   },
   methods: {
-    getDataScan (params) {
+    focusFirst () {
+      this.$children.forEach(el => {
+        if (el.$vnode.data.model && el.$el.classList.contains('is-danger')) {
+          const expression = el.$vnode.data.model.expression
+          if (expression === 'datePromo' || expression === 'summaPromo') {
+            this.linkToScrollScan = expression
+          }
+        }
+      })
+      // this.$scrollTo(elErrorValid.$el)
+    },
+    async getDataScan (params) {
       if (params.date) {
         this.store = ''
         const summaPromo = params.summa
@@ -162,7 +176,8 @@ export default {
         this.isDisabledField = true
         this.showInfoReceipt = true
         this.fetchStore(params)
-        this.$v.$touch()
+        await this.$v.$touch()
+        this.focusFirst()
         this.paramsScan = params
       } else {
         this.store = ''
